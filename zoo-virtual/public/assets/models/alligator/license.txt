@@ -1,0 +1,11 @@
+Model Information:
+* title:	Alligator
+* source:	https://sketchfab.com/3d-models/alligator-1de18292eb6e433587e60becd942ef6b
+* author:	Xfdfgd (https://sketchfab.com/Xfdfgd)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Alligator" (https://sketchfab.com/3d-models/alligator-1de18292eb6e433587e60becd942ef6b) by Xfdfgd (https://sketchfab.com/Xfdfgd) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Realsitic Monkey
+* source:	https://sketchfab.com/3d-models/realsitic-monkey-50e4b1da03494429b1265fc095f2c530
+* author:	TdoubleU8 (https://sketchfab.com/TdoubleU8)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Realsitic Monkey" (https://sketchfab.com/3d-models/realsitic-monkey-50e4b1da03494429b1265fc095f2c530) by TdoubleU8 (https://sketchfab.com/TdoubleU8) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

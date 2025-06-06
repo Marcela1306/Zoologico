@@ -1,0 +1,11 @@
+Model Information:
+* title:	Hippos
+* source:	https://sketchfab.com/3d-models/hippos-c0e0422d554a437083a306654977d1a6
+* author:	thunders14 (https://sketchfab.com/thunders14)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Hippos" (https://sketchfab.com/3d-models/hippos-c0e0422d554a437083a306654977d1a6) by thunders14 (https://sketchfab.com/thunders14) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Tiger
+* source:	https://sketchfab.com/3d-models/tiger-67bbedd727a047869ef7c7b608445484
+* author:	Blender Artist (https://sketchfab.com/moizmuhammad373)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Tiger" (https://sketchfab.com/3d-models/tiger-67bbedd727a047869ef7c7b608445484) by Blender Artist (https://sketchfab.com/moizmuhammad373) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
