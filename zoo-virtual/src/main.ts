@@ -239,15 +239,47 @@ export function abrirPortonDesdeHTML() {
   camera.position.set(12, 8, 20);
   controls.update();
 
+  // Mostrar ticket dorado animado
+  const geometria = new THREE.PlaneGeometry(6, 3);
+  const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.png');
+  const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true });
+  const ticket = new THREE.Mesh(geometria, materialTicket);
+  ticket.position.set(0, 5, camera.position.z - 10);
+  ticket.rotation.y = Math.PI;
+
+  scene.add(ticket);
+
+  // Animación de entrada flotante
+  const tiempoInicio = Date.now();
+  const animarTicket = () => {
+    const tiempo = (Date.now() - tiempoInicio) / 1000;
+    ticket.position.y = 5 + Math.sin(tiempo * 2) * 0.2;
+    ticket.rotation.y += 0.01;
+    if (tiempo < 6) requestAnimationFrame(animarTicket);
+    else scene.remove(ticket);
+  };
+  animarTicket();
+
+  // Mostrar mensaje en UI
   const ui = document.getElementById("ticket-ui");
   if (ui) {
-    ui.innerHTML = "<h2>🎟️ Ticket comprado</h2><p>¡Bienvenido al Zoológico Virtual!</p>";
-    ui.style.background = '#d4edda';
-    ui.style.border = '2px solid #28a745';
-    ui.style.color = '#155724';
-    setTimeout(() => (ui.style.opacity = "0"), 5000);
+    ui.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <img src="/assets/textures/ticket-icon.png" alt="Ticket" style="width: 40px; height: 40px;">
+        <div>
+          <h2 style="margin: 0">🎫 ¡Ticket Dorado Activado!</h2>
+          <p style="margin: 0">Entra al Zoológico Nacional de Nicaragua</p>
+        </div>
+      </div>
+    `;
+    ui.style.background = '#fff3cd';
+    ui.style.border = '2px solid #ffc107';
+    ui.style.color = '#856404';
+    ui.style.opacity = '1';
+    setTimeout(() => (ui.style.opacity = "0"), 7000);
   }
 }
+
 
 function animate() {
   requestAnimationFrame(animate);
