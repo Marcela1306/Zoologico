@@ -275,10 +275,10 @@ window.addEventListener("click", (event) => {
       mostrarInfo("Hipopotamo", "Es un gran mamífero artiodáctilo fundamentalmente herbívoro que habita en el África subsahariana.");
     }
     if (object.name === "tigre") {
-      mostrarInfo("Tigre Moribundo", "Incluye a catorce especies actuales.​ Se trata de grandes reptiles semiacuáticos que viven en las regiones tropicales");
+      mostrarInfo("Tigre", "El tigre es una de las especies​ de la subfamilia de los panterinos pertenecientes al género Panthera");
     }
     if (object.name == "Mono") {
-      mostrarInfo("Mono Yo", "Es un gran mamífero artiodáctilo fundamentalmente herbívoro que habita en el África subsahariana.");
+      mostrarInfo("Mono", "Son animales mamíferos, dotados de cuatro extremidades prensiles y una cola, con un cuerpo cubierto de pelaje diverso");
     }
   }
 });
