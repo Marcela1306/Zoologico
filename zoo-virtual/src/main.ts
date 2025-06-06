@@ -181,7 +181,7 @@ function crearTextoSobreTicket(texto: string): THREE.Mesh {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
   canvas.width = 512;
-  canvas.height = 128;
+  canvas.height = 110;
   context.fillStyle = '#fff';
   context.font = '28px Arial';
   context.textAlign = 'center';
