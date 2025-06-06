@@ -22,10 +22,11 @@ const mouse = new THREE.Vector2();
 
 export function inicializar() {
   scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0xa3d1ff, 30, 120);
   scene.background = new THREE.Color(0xa3d1ff);
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(20, 12, 35);
+  camera.position.set(25, 15, 50);
 
   renderer = new THREE.WebGLRenderer({
     canvas: document.getElementById('canvas') as HTMLCanvasElement,
@@ -33,15 +34,23 @@ export function inicializar() {
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 1, -5);
   controls.update();
 
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 0.8));
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1));
   const luzDir = new THREE.DirectionalLight(0xffffff, 0.8);
   luzDir.position.set(30, 60, 30);
   luzDir.castShadow = true;
+  luzDir.shadow.mapSize.set(2048, 2048);
+  luzDir.shadow.camera.near = 1;
+  luzDir.shadow.camera.far = 200;
+  luzDir.shadow.camera.left = -50;
+  luzDir.shadow.camera.right = 50;
+  luzDir.shadow.camera.top = 50;
+  luzDir.shadow.camera.bottom = -50;
   scene.add(luzDir);
 
   const suelo = new THREE.Mesh(
@@ -74,9 +83,10 @@ function cargarPorton() {
   objLoader.load('/assets/models/wall1.obj', (obj) => {
     obj.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
-        (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({ map: textura });
-        (child as THREE.Mesh).castShadow = true;
-        (child as THREE.Mesh).receiveShadow = true;
+        const mesh = child as THREE.Mesh;
+        mesh.material = new THREE.MeshStandardMaterial({ map: textura });
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
       }
     });
 
@@ -95,14 +105,15 @@ function cargarPersona() {
   const gltfLoader = new GLTFLoader();
   gltfLoader.load('/assets/models/persona/scene.gltf', (gltf) => {
     persona = gltf.scene;
-    persona.scale.set(0.7, 0.7, 0.7);
-    persona.position.set(10, 0, 0);
+    persona.scale.set(1, 1, 1);
+    persona.position.set(15, 0, 0);
     persona.rotation.y = Math.PI;
 
     persona.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
-        (child as THREE.Mesh).castShadow = true;
-        (child as THREE.Mesh).receiveShadow = true;
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
       }
     });
 
@@ -135,18 +146,19 @@ function cargarSonidoAmbiente() {
   loader.load('/assets/sounds/zoo-ambiente.mp3', (buffer) => {
     sonidoAmbiente.setBuffer(buffer);
     sonidoAmbiente.setLoop(true);
-    sonidoAmbiente.setVolume(0.3);
+    sonidoAmbiente.setVolume(0.4);
     sonidoAmbiente.play();
   });
 }
 
 function agregarAnimales() {
-  const geometria = new THREE.SphereGeometry(1, 16, 16);
+  const geometria = new THREE.SphereGeometry(1.5, 16, 16);
   const material = new THREE.MeshStandardMaterial({ color: 0xffcc00 });
 
   for (let i = 0; i < 8; i++) {
     const animal = new THREE.Mesh(geometria, material.clone());
-    animal.position.set(Math.random() * 30 - 15, 1, Math.random() * -30);
+    animal.position.set(Math.random() * 40 - 20, 1.5, Math.random() * -40);
+    animal.castShadow = true;
     animal.userData = { nombre: `Animal ${i + 1}` };
     scene.add(animal);
   }
@@ -156,23 +168,25 @@ function agregarDecoracion() {
   const troncoMat = new THREE.MeshStandardMaterial({ color: 0x8b5a2b });
   const hojaMat = new THREE.MeshStandardMaterial({ color: 0x228b22 });
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 12; i++) {
     const tronco = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 3, 8), troncoMat);
-    tronco.position.set(Math.random() * 50 - 25, 1.5, Math.random() * -50);
+    tronco.position.set(Math.random() * 60 - 30, 1.5, Math.random() * -60);
+    tronco.castShadow = true;
     scene.add(tronco);
 
     const copa = new THREE.Mesh(new THREE.SphereGeometry(1.5, 8, 8), hojaMat);
     copa.position.set(tronco.position.x, 3, tronco.position.z);
+    copa.castShadow = true;
     scene.add(copa);
   }
 }
 
 function agregarCartelBienvenida() {
-  const geometria = new THREE.PlaneGeometry(10, 3);
+  const geometria = new THREE.PlaneGeometry(12, 4);
   const textura = new THREE.TextureLoader().load('/assets/textures/cartel-bienvenida.png');
   const material = new THREE.MeshBasicMaterial({ map: textura, transparent: true });
   const cartel = new THREE.Mesh(geometria, material);
-  cartel.position.set(0, 4, -10);
+  cartel.position.set(0, 5, -12);
   scene.add(cartel);
 }
 
@@ -202,7 +216,7 @@ function manejarTeclas(e: KeyboardEvent) {
 }
 
 export function abrirPortonDesdeHTML() {
-  if (portonAbierto || ticketComprado === true) return;
+  if (portonAbierto || ticketComprado) return;
   ticketComprado = true;
   portonAbierto = true;
 
@@ -222,7 +236,7 @@ export function abrirPortonDesdeHTML() {
   avanzar = true;
 
   controls.target.set(0, 1, -5);
-  camera.position.set(8, 5, 14);
+  camera.position.set(12, 8, 20);
   controls.update();
 
   const ui = document.getElementById("ticket-ui");
@@ -245,7 +259,7 @@ function animate() {
 
       const offset = new THREE.Vector3(5, 5, 10);
       const objetivoCamara = persona.position.clone().add(offset);
-      camera.position.lerp(objetivoCamara, 0.05);
+      camera.position.lerp(objetivoCamara, 0.04);
       camera.lookAt(persona.position);
     } else {
       avanzar = false;
