@@ -57,7 +57,7 @@ function cargarPorton() {
   const objLoader = new OBJLoader();
   const textura = new THREE.TextureLoader().load('/assets/textures/briks_u1_v1.png');
 
-  objLoader.load('/assets/models/porton.obj', (obj) => {
+  objLoader.load('/assets/models/porton1.obj', (obj) => {
     obj.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({ map: textura });
