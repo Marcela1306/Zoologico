@@ -21,10 +21,10 @@ const mouse = new THREE.Vector2();
 
 export function inicializar() {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xadd8e6); // Cielo claro
+  scene.background = new THREE.Color(0x87ceeb);
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(10, 7, 25);
+  camera.position.set(15, 10, 30);
 
   renderer = new THREE.WebGLRenderer({
     canvas: document.getElementById('canvas') as HTMLCanvasElement,
@@ -37,27 +37,29 @@ export function inicializar() {
   controls.target.set(0, 1, -5);
   controls.update();
 
-  // Luces
-  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-  const luzDireccional = new THREE.DirectionalLight(0xffffff, 0.8);
-  luzDireccional.position.set(5, 10, 5);
-  luzDireccional.castShadow = true;
-  scene.add(luzDireccional);
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+  hemiLight.position.set(0, 200, 0);
+  scene.add(hemiLight);
 
-  // Suelo
-  const suelo = new THREE.Mesh(
-    new THREE.PlaneGeometry(200, 200),
-    new THREE.MeshStandardMaterial({ color: 0x75a33f })
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(50, 50, 50);
+  dirLight.castShadow = true;
+  scene.add(dirLight);
+
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(1000, 1000),
+    new THREE.MeshPhongMaterial({ color: 0x7ec850 })
   );
-  suelo.rotation.x = -Math.PI / 2;
-  suelo.receiveShadow = true;
-  scene.add(suelo);
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
 
   cargarPorton();
   cargarPersona();
   cargarSonido();
   cargarSonidoAmbiente();
   agregarAnimales();
+  agregarDecoracion();
 
   window.addEventListener('resize', ajustarPantalla);
   window.addEventListener('click', detectarClickAnimal);
@@ -140,13 +142,13 @@ function cargarSonidoAmbiente() {
 }
 
 function agregarAnimales() {
-  const geometria = new THREE.BoxGeometry(1, 1, 1);
+  const geometria = new THREE.BoxGeometry(1.5, 1.5, 1.5);
   const material = new THREE.MeshStandardMaterial({ color: 0xffa500 });
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 6; i++) {
     const animal = new THREE.Mesh(geometria, material.clone());
-    animal.position.set(Math.random() * 20 - 10, 0.5, Math.random() * -20);
-    animal.userData = { nombre: "Animal " + (i + 1) };
+    animal.position.set(Math.random() * 30 - 15, 0.75, Math.random() * -30);
+    animal.userData = { nombre: `Animal ${i + 1}` };
     scene.add(animal);
 
     const offset = Math.random() * Math.PI * 2;
@@ -157,6 +159,25 @@ function agregarAnimales() {
       requestAnimationFrame(animar);
     };
     animar();
+  }
+}
+
+function agregarDecoracion() {
+  const arbolGeometry = new THREE.CylinderGeometry(0.2, 0.5, 3, 8);
+  const copaGeometry = new THREE.SphereGeometry(1.2, 8, 8);
+  const troncoMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+  const copaMaterial = new THREE.MeshStandardMaterial({ color: 0x228b22 });
+
+  for (let i = 0; i < 10; i++) {
+    const tronco = new THREE.Mesh(arbolGeometry, troncoMaterial);
+    tronco.position.set(Math.random() * 80 - 40, 1.5, Math.random() * -80);
+    tronco.castShadow = true;
+    scene.add(tronco);
+
+    const copa = new THREE.Mesh(copaGeometry, copaMaterial);
+    copa.position.set(tronco.position.x, 3.5, tronco.position.z);
+    copa.castShadow = true;
+    scene.add(copa);
   }
 }
 
