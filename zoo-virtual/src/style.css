@@ -103,7 +103,7 @@ button:focus-visible {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999; /* Asegura que esté por encima de todo */
+  z-index: 999; 
 }
 
 #instructions {
