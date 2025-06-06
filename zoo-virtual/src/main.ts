@@ -9,7 +9,6 @@ console.log("Three.js script started.");
 // --- Setup Básico ---
 const scene = new THREE.Scene();
 
-// Ajustes de la cámara para mitigar el Z-fighting:
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
 camera.position.set(0, 9.0, 0);
 
@@ -162,25 +161,21 @@ const skySphere = new THREE.Mesh(
 );
 scene.add(skySphere);
 
-// --- Césped con Textura (Reestructurado para asegurar carga) ---
-let ground: THREE.Mesh; // Declaramos 'ground' aquí para que sea accesible globalmente
+let ground: THREE.Mesh; 
 
-// Carga la textura de pasto real
 textureLoader.load(
     'https://media.istockphoto.com/id/506692747/es/foto/c%C3%A9sped-artificial.jpg?s=612x612&w=0&k=20&c=QbW-vBu7XTDiH_GQ6S5R2s4Xx9lAbfQ055cbozQ1fRs=', // <--- ¡Asegúrate de que esta ruta sea correcta para tu textura!
     (texture) => {
-        // Esta función se ejecuta SÓLO cuando la textura ha terminado de cargar.
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(5, 5);
         texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
         texture.colorSpace = THREE.SRGBColorSpace;
 
-        // Ahora creamos y añadimos el ground a la escena una vez que la textura está lista.
         ground = new THREE.Mesh(
             new THREE.PlaneGeometry(500, 1500),
             new THREE.MeshStandardMaterial({
-                map: texture, // Usamos la 'texture' que acaba de cargar
+                map: texture, 
                 roughness: 0.8,
                 metalness: 0.0
             })
@@ -191,18 +186,16 @@ textureLoader.load(
         ground.renderOrder = 0;
         scene.add(ground);
         
-        // Opcional: Si tienes un loader manager, podrías indicar aquí que el pasto está cargado.
         console.log("Pasto cargado y añadido a la escena.");
 
     },
-    undefined, // Callback de progreso (no usado aquí)
+    undefined, 
     (err) => {
         onTextureError('/assets/textures/grass_seamless.jpg', err);
-        // Fallback: Si la textura no carga, podrías añadir un plano de color simple
-        // para que la escena no quede sin pasto.
+       
         ground = new THREE.Mesh(
             new THREE.PlaneGeometry(800, 800),
-            new THREE.MeshStandardMaterial({ color: 0x75a33f }) // Color de pasto por defecto
+            new THREE.MeshStandardMaterial({ color: 0x75a33f }) 
         );
         ground.rotation.x = -Math.PI / 2;
         ground.position.y = -0.01;
@@ -229,7 +222,6 @@ const portonTexture = textureLoader.load(
     (err) => onTextureError('/assets/models/briks_u1_v1.png', err)
 );
 
-// Cargar hipopotamo GLTF
 gltfLoader.load(
   '/assets/models/hippos/scene.gltf',
   (gltf) => {
@@ -290,7 +282,6 @@ function animate() {
 
     const delta = clock.getDelta();
 
-    // Movimiento de la cámara (PointerLockControls)
     if (controls.isLocked) {
         const velocity = new THREE.Vector3();
         const direction = new THREE.Vector3();
@@ -305,18 +296,14 @@ function animate() {
         controls.moveRight(-velocity.x * delta);
         controls.moveForward(-velocity.z * delta);
 
-        // Asegurarse de que la cámara no atraviese el suelo
-        // Solo podemos acceder a 'ground' si ya ha sido inicializado.
-        // Agregamos una verificación para 'ground' antes de usarlo.
+       
         if (ground) { 
             controls.getObject().position.y = Math.max(controls.getObject().position.y, ground.position.y + 0.9);
         } else {
-            // Un valor de respaldo si el ground aún no se ha cargado.
             controls.getObject().position.y = Math.max(controls.getObject().position.y, 0.9);
         }
     }
 
-    // Movimiento automático de la persona
     if (persona && avanzar) {
         if (persona.position.x > -1.5) {
             persona.position.x -= 0.03;
@@ -329,19 +316,16 @@ function animate() {
         }
     }
 
-    // Animación de apertura del portón
     if (portonAbierto && portonPivot.rotation.y > -Math.PI / 2) {
         portonPivot.rotation.y -= 0.02;
     }
 
-    // Mantener cielo centrado con la cámara para un efecto de skybox
     skySphere.position.copy(camera.position);
 
     renderer.render(scene, camera);
 }
 animate();
 
-// --- Manejo del Redimensionamiento de la Ventana ---
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
