@@ -124,7 +124,6 @@ function cargarSonido() {
   });
 }
 
-// Abrir portón desde HTML
 export function abrirPortonDesdeHTML() {
   if (portonAbierto) return;
   portonAbierto = true;
@@ -144,18 +143,50 @@ export function abrirPortonDesdeHTML() {
 
   avanzar = true;
 
-  // Cambiar cámara
   controls.target.set(0, 1, -5);
   camera.position.set(8, 5, 14);
   controls.update();
 
-  // Cambiar UI
+  // Mostrar ticket dorado animado
+  const geometria = new THREE.PlaneGeometry(6, 3);
+  const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.jpg');
+  const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true });
+  const ticket = new THREE.Mesh(geometria, materialTicket);
+  ticket.position.set(0, 5, camera.position.z - 10);
+  ticket.rotation.y = Math.PI;
+
+  scene.add(ticket);
+
+  const tiempoInicio = Date.now();
+  const animarTicket = () => {
+    const tiempo = (Date.now() - tiempoInicio) / 1000;
+    ticket.position.y = 5 + Math.sin(tiempo * 2) * 0.2;
+    ticket.rotation.y += 0.01;
+    if (tiempo < 6) requestAnimationFrame(animarTicket);
+    else scene.remove(ticket);
+  };
+  animarTicket();
+
   const ui = document.getElementById("ticket-ui");
   if (ui) {
-    ui.innerHTML = "<h2>🎉 Ticket comprado</h2><p>¡Bienvenido al Zoológico!</p>";
-    setTimeout(() => ui.style.opacity = "0", 4000);
+    ui.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <img src="/assets/textures/ticket-icon.png" alt="Ticket" style="width: 40px; height: 40px; animation: pulse 1s infinite;">
+        <div>
+          <h2 style="margin: 0; font-size: 1.2em">🎫 ¡Ticket Dorado Activado!</h2>
+          <p style="margin: 0">Entra al Zoológico Nacional de Nicaragua</p>
+        </div>
+      </div>
+    `;
+    ui.style.background = '#fff3cd';
+    ui.style.border = '2px solid #ffc107';
+    ui.style.color = '#856404';
+    ui.style.opacity = '1';
+    ui.style.transition = 'opacity 1s';
+    setTimeout(() => (ui.style.opacity = "0"), 7000);
   }
 }
+
 
 // Animación
 function animate() {
