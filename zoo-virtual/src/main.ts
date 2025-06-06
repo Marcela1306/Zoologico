@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+// Escena y elementos globales
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
@@ -15,64 +16,52 @@ let persona: THREE.Object3D | null = null;
 let avanzar = false;
 let portonAbierto = false;
 let sonidoPuerta: THREE.Audio;
-let ticketComprado = false;
 
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
+// Inicialización
 export function inicializar() {
+  // Escena
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xa3d1ff, 30, 120);
-  scene.background = new THREE.Color(0xa3d1ff);
 
+  // Cámara
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(25, 15, 50);
+  camera.position.set(10, 7, 25);
 
-  renderer = new THREE.WebGLRenderer({
-    canvas: document.getElementById('canvas') as HTMLCanvasElement,
-    antialias: true,
-  });
+  // Render
+  renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas') as HTMLCanvasElement, antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x87ceeb);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+  // Controles
   controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 1, -5);
   controls.update();
 
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1));
-  const luzDir = new THREE.DirectionalLight(0xffffff, 0.8);
-  luzDir.position.set(30, 60, 30);
-  luzDir.castShadow = true;
-  luzDir.shadow.mapSize.set(2048, 2048);
-  luzDir.shadow.camera.near = 1;
-  luzDir.shadow.camera.far = 200;
-  luzDir.shadow.camera.left = -50;
-  luzDir.shadow.camera.right = 50;
-  luzDir.shadow.camera.top = 50;
-  luzDir.shadow.camera.bottom = -50;
-  scene.add(luzDir);
+  // Luces
+  scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+  directionalLight.position.set(5, 10, 5);
+  directionalLight.castShadow = true;
+  scene.add(directionalLight);
 
-  const suelo = new THREE.Mesh(
-    new THREE.PlaneGeometry(2000, 2000),
-    new THREE.MeshStandardMaterial({ color: 0x6db96d })
+  // Suelo
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(500, 500),
+    new THREE.MeshStandardMaterial({ color: 0x75a33f })
   );
-  suelo.rotation.x = -Math.PI / 2;
-  suelo.receiveShadow = true;
-  scene.add(suelo);
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
 
+  // Cargar modelos y sonidos
   cargarPorton();
   cargarPersona();
   cargarSonido();
-  cargarSonidoAmbiente();
-  agregarAnimales();
-  agregarDecoracion();
-  agregarCartelBienvenida();
 
+  // Escuchar resize
   window.addEventListener('resize', ajustarPantalla);
-  window.addEventListener('click', detectarClickAnimal);
-  window.addEventListener('keydown', manejarTeclas);
 
+  // Iniciar animación
   animate();
 }
 
@@ -83,16 +72,15 @@ function cargarPorton() {
   objLoader.load('/assets/models/wall1.obj', (obj) => {
     obj.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        mesh.material = new THREE.MeshStandardMaterial({ map: textura });
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
+        (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({ map: textura });
+        (child as THREE.Mesh).castShadow = true;
+        (child as THREE.Mesh).receiveShadow = true;
       }
     });
 
     const escala = 0.15;
     obj.scale.set(escala, escala, escala);
-    obj.position.set((10 * escala) / 2, 0, 0);
+    obj.position.set((10 * escala) / 2, 0, 0); // Ajuste para abrir bien
 
     porton = obj;
     portonPivot.add(porton);
@@ -105,20 +93,20 @@ function cargarPersona() {
   const gltfLoader = new GLTFLoader();
   gltfLoader.load('/assets/models/persona/scene.gltf', (gltf) => {
     persona = gltf.scene;
-    persona.scale.set(1, 1, 1);
-    persona.position.set(15, 0, 0);
+    persona.scale.set(0.7, 0.7, 0.7);
+    persona.position.set(10, 0, 0);
     persona.rotation.y = Math.PI;
 
     persona.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
+        (child as THREE.Mesh).castShadow = true;
+        (child as THREE.Mesh).receiveShadow = true;
       }
     });
 
     scene.add(persona);
 
+    // Habilitar botón
     const btn = document.getElementById("buy-ticket-btn") as HTMLButtonElement;
     if (btn) btn.removeAttribute("disabled");
   });
@@ -127,7 +115,6 @@ function cargarPersona() {
 function cargarSonido() {
   const listener = new THREE.AudioListener();
   camera.add(listener);
-
   sonidoPuerta = new THREE.Audio(listener);
   const loader = new THREE.AudioLoader();
   loader.load('/assets/sounds/puerta.mp3', (buffer) => {
@@ -137,87 +124,9 @@ function cargarSonido() {
   });
 }
 
-function cargarSonidoAmbiente() {
-  const listener = new THREE.AudioListener();
-  camera.add(listener);
-
-  const sonidoAmbiente = new THREE.Audio(listener);
-  const loader = new THREE.AudioLoader();
-  loader.load('/assets/sounds/zoo-ambiente.mp3', (buffer) => {
-    sonidoAmbiente.setBuffer(buffer);
-    sonidoAmbiente.setLoop(true);
-    sonidoAmbiente.setVolume(0.4);
-    sonidoAmbiente.play();
-  });
-}
-
-function agregarAnimales() {
-  const geometria = new THREE.SphereGeometry(1.5, 16, 16);
-  const material = new THREE.MeshStandardMaterial({ color: 0xffcc00 });
-
-  for (let i = 0; i < 8; i++) {
-    const animal = new THREE.Mesh(geometria, material.clone());
-    animal.position.set(Math.random() * 40 - 20, 1.5, Math.random() * -40);
-    animal.castShadow = true;
-    animal.userData = { nombre: `Animal ${i + 1}` };
-    scene.add(animal);
-  }
-}
-
-function agregarDecoracion() {
-  const troncoMat = new THREE.MeshStandardMaterial({ color: 0x8b5a2b });
-  const hojaMat = new THREE.MeshStandardMaterial({ color: 0x228b22 });
-
-  for (let i = 0; i < 12; i++) {
-    const tronco = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 3, 8), troncoMat);
-    tronco.position.set(Math.random() * 60 - 30, 1.5, Math.random() * -60);
-    tronco.castShadow = true;
-    scene.add(tronco);
-
-    const copa = new THREE.Mesh(new THREE.SphereGeometry(1.5, 8, 8), hojaMat);
-    copa.position.set(tronco.position.x, 3, tronco.position.z);
-    copa.castShadow = true;
-    scene.add(copa);
-  }
-}
-
-function agregarCartelBienvenida() {
-  const geometria = new THREE.PlaneGeometry(12, 4);
-  const textura = new THREE.TextureLoader().load('/assets/textures/cartel-bienvenida.png');
-  const material = new THREE.MeshBasicMaterial({ map: textura, transparent: true });
-  const cartel = new THREE.Mesh(geometria, material);
-  cartel.position.set(0, 5, -12);
-  scene.add(cartel);
-}
-
-function detectarClickAnimal(event: MouseEvent) {
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  raycaster.setFromCamera(mouse, camera);
-  const intersectados = raycaster.intersectObjects(scene.children);
-
-  for (let obj of intersectados) {
-    if (obj.object.userData.nombre) {
-      alert(`🐾 Estás viendo: ${obj.object.userData.nombre}`);
-      break;
-    }
-  }
-}
-
-function manejarTeclas(e: KeyboardEvent) {
-  if (e.key.toLowerCase() === 'f') {
-    if (!document.fullscreenElement) {
-      document.body.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  }
-}
-
+// Abrir portón desde HTML
 export function abrirPortonDesdeHTML() {
-  if (portonAbierto || ticketComprado) return;
-  ticketComprado = true;
+  if (portonAbierto) return;
   portonAbierto = true;
 
   sonidoPuerta?.play();
@@ -235,53 +144,20 @@ export function abrirPortonDesdeHTML() {
 
   avanzar = true;
 
+  // Cambiar cámara
   controls.target.set(0, 1, -5);
-  camera.position.set(12, 8, 20);
+  camera.position.set(8, 5, 14);
   controls.update();
 
-  // Mostrar ticket dorado animado
-  const geometria = new THREE.PlaneGeometry(6, 3);
-  const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.jpg');
-  const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true });
-  const ticket = new THREE.Mesh(geometria, materialTicket);
-  ticket.position.set(0, 5, camera.position.z - 10);
-  ticket.rotation.y = Math.PI;
-
-  scene.add(ticket);
-
-  // Animación de entrada flotante
-  const tiempoInicio = Date.now();
-  const animarTicket = () => {
-    const tiempo = (Date.now() - tiempoInicio) / 1000;
-    ticket.position.y = 5 + Math.sin(tiempo * 2) * 0.2;
-    ticket.rotation.y += 0.01;
-    if (tiempo < 6) requestAnimationFrame(animarTicket);
-    else scene.remove(ticket);
-  };
-  animarTicket();
-
-  // Mostrar mensaje en UI
+  // Cambiar UI
   const ui = document.getElementById("ticket-ui");
   if (ui) {
-    ui.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <img src="/assets/textures/ticket-icon.png" alt="Ticket" style="width: 40px; height: 40px; animation: pulse 1s infinite;">
-        <div>
-          <h2 style="margin: 0; font-size: 1.2em">🎫 ¡Ticket Dorado Activado!</h2>
-          <p style="margin: 0">Entra al Zoológico Nacional de Nicaragua</p>
-        </div>
-      </div>
-    `;
-    ui.style.background = '#fff3cd';
-    ui.style.border = '2px solid #ffc107';
-    ui.style.color = '#856404';
-    ui.style.opacity = '1';
-    ui.style.transition = 'opacity 1s';
-    setTimeout(() => (ui.style.opacity = "0"), 7000);
+    ui.innerHTML = "<h2>🎉 Ticket comprado</h2><p>¡Bienvenido al Zoológico!</p>";
+    setTimeout(() => ui.style.opacity = "0", 4000);
   }
 }
 
-
+// Animación
 function animate() {
   requestAnimationFrame(animate);
 
@@ -289,11 +165,6 @@ function animate() {
     if (persona.position.x > -1.5) {
       persona.position.x -= 0.02;
       persona.position.z -= 0.01;
-
-      const offset = new THREE.Vector3(5, 5, 10);
-      const objetivoCamara = persona.position.clone().add(offset);
-      camera.position.lerp(objetivoCamara, 0.04);
-      camera.lookAt(persona.position);
     } else {
       avanzar = false;
     }
