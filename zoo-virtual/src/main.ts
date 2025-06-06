@@ -187,6 +187,14 @@ export function abrirPortonDesdeHTML() {
   }
 }
 
+// Escuchar tecla "s" para simular compra del ticket
+window.addEventListener('keydown', (e) => {
+  if (e.key.toLowerCase() === 's') {
+    abrirPortonDesdeHTML();
+  }
+});
+
+
 
 // Animación
 function animate() {
