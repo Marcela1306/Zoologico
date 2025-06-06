@@ -57,7 +57,7 @@ function cargarPorton() {
   const objLoader = new OBJLoader();
   const textura = new THREE.TextureLoader().load('/assets/textures/briks_u1_v1.png');
 
-  objLoader.load('/assets/models/porton1.obj', (obj) => {
+  objLoader.load('/assets/models/wall1.obj', (obj) => {
     obj.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({ map: textura });
@@ -79,7 +79,7 @@ function cargarPorton() {
 
 function cargarPersona() {
   const gltfLoader = new GLTFLoader();
-  gltfLoader.load('/assets/models/persona/scene.gltf', (gltf) => {
+  gltfLoader.load('/assets/models/scene.gltf', (gltf) => {
     persona = gltf.scene;
     persona.scale.set(0.7, 0.7, 0.7);
     persona.position.set(10, 0, 0);
