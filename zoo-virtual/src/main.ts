@@ -6,7 +6,7 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 
 console.log("Three.js script started.");
 
-// --- Setup Básico ---
+// --- Basic Configuration ---
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
@@ -126,7 +126,7 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
-// --- Luces ---
+// --- Lights ---
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
 directionalLight.position.set(5, 10, 5);
 directionalLight.castShadow = true;
@@ -149,8 +149,7 @@ const onTextureError = (url: string, err: any) => {
     console.error(`Error al cargar la textura desde: ${url}`, err);
 };
 
-// --- Cielo con Textura (Skybox simulado con una esfera grande) ---
-const skyTexture = textureLoader.load(
+// --- Textured Sky (Simulated Skybox with a large sphere) ---const skyTexture = textureLoader.load(
     'https://images.unsplash.com/photo-1622554364278-d5b2b0c3a84d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9uZG8lMjBkZSUyMGNpZWxvJTIwYXzxlbnwwfHwwfHx8MA%3D%3D',
     undefined,
     (err) => onTextureError('https://images.unsplash.com/photo-1622554364278-d5b2b0c3a84d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9uZG8lMjBkZSUyMGNpZWxvJTIwYXzxlbnwwfHwwfHx8MA%3D%3D', err)
@@ -207,8 +206,7 @@ textureLoader.load(
 );
 
 
-// --- Carga de Modelos ---
-const gltfLoader = new GLTFLoader();
+// --- Model Loading ---const gltfLoader = new GLTFLoader();
 const objLoader = new OBJLoader();
 
 let porton: THREE.Object3D | null = null;
