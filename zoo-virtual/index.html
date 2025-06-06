@@ -3,15 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <title>Zoológico 3D</title>
+  <style>
+    body {
+      margin: 0;
+      overflow:hidden;
+      font-family: Arial, sans-serif;
+    }
 
+    canvas {
+      display: block;
+    }
+
+    #ticket-ui{
+      position:absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 15px;
+      border-radius: 10px;
+    }
+     #ticket-ui h2, #ticket-ui p {
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
-  <div id="ticket-ui">
   <canvas id="canvas"></canvas>
 
+  <div id="ticket-ui">
+    <button id="buy-ticket-btn" disabled onclick="abrirPorton()">🎟️ Comprar Ticket</button>
+  </div>
+
   <script type="module">
-    import { abrirPortonDesdeHTML } from './src/main.ts';
+    import { inicializar, abrirPortonDesdeHTML } from './src/main.ts';
     window.abrirPorton = abrirPortonDesdeHTML;
+    inicializar();
   </script>
 </body>
 </html>
