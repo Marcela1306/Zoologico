@@ -21,7 +21,7 @@ const mouse = new THREE.Vector2();
 
 export function inicializar() {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xadd8e6);
+  scene.background = new THREE.Color(0xadd8e6); // Cielo claro
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(10, 7, 25);
@@ -37,12 +37,14 @@ export function inicializar() {
   controls.target.set(0, 1, -5);
   controls.update();
 
+  // Luces
   scene.add(new THREE.AmbientLight(0xffffff, 0.6));
   const luzDireccional = new THREE.DirectionalLight(0xffffff, 0.8);
   luzDireccional.position.set(5, 10, 5);
   luzDireccional.castShadow = true;
   scene.add(luzDireccional);
 
+  // Suelo
   const suelo = new THREE.Mesh(
     new THREE.PlaneGeometry(200, 200),
     new THREE.MeshStandardMaterial({ color: 0x75a33f })
