@@ -265,9 +265,9 @@ export function abrirPortonDesdeHTML() {
   if (ui) {
     ui.innerHTML = `
       <div style="display: flex; align-items: center; gap: 10px;">
-        <img src="/assets/textures/ticket-icon.png" alt="Ticket" style="width: 40px; height: 40px;">
+        <img src="/assets/textures/ticket-icon.png" alt="Ticket" style="width: 40px; height: 40px; animation: pulse 1s infinite;">
         <div>
-          <h2 style="margin: 0">🎫 ¡Ticket Dorado Activado!</h2>
+          <h2 style="margin: 0; font-size: 1.2em">🎫 ¡Ticket Dorado Activado!</h2>
           <p style="margin: 0">Entra al Zoológico Nacional de Nicaragua</p>
         </div>
       </div>
@@ -276,6 +276,7 @@ export function abrirPortonDesdeHTML() {
     ui.style.border = '2px solid #ffc107';
     ui.style.color = '#856404';
     ui.style.opacity = '1';
+    ui.style.transition = 'opacity 1s';
     setTimeout(() => (ui.style.opacity = "0"), 7000);
   }
 }
