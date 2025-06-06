@@ -1,17 +1,154 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zoológico 3D</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background-color: #000; /* Fondo oscuro para el canvas inicial */
+    }
+    #canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000; /* Asegura un fondo negro antes de que cargue el contenido 3D */
+    }
 
+    /* --- ESTILOS MEJORADOS PARA EL BLOCKER Y LAS INSTRUCCIONES --- */
+    #blocker {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7); /* Oscurece más el fondo */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      /* Añade una transición para cuando aparezca/desaparezca */
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    #instructions {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 40px; /* Más padding */
+      border-radius: 20px; /* Esquinas más redondeadas */
+      background: rgba(255, 255, 255, 0.15); /* Fondo translúcido */
+      backdrop-filter: blur(10px); /* Efecto de desenfoque detrás del cuadro */
+      -webkit-backdrop-filter: blur(10px); /* Soporte para Safari */
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+      animation: fadeInScale 0.6s ease-out; /* Animación de entrada */
+    }
+
+    #instructions p {
+      margin: 10px 0;
+      font-size: 1.3em; /* Ajuste del tamaño de fuente */
+      line-height: 1.6; /* Mejor espaciado de línea */
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Sombra de texto para contraste */
+      color: #E0E0E0; /* Un color de texto más suave */
+    }
+    #instructions p:first-child {
+      font-size: 2.8em; /* Título más grande */
+      font-weight: bold;
+      margin-bottom: 25px;
+      color: #fff; /* Título blanco */
+      text-transform: uppercase; /* Convertir a mayúsculas */
+      letter-spacing: 2px; /* Espaciado entre letras */
+    }
+
+    /* Animación para la entrada del cuadro de instrucciones */
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    /* --- FIN DE ESTILOS MEJORADOS --- */
+
+    #ticket-ui {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255,255,255,0.9);
+      padding: 15px;
+      border-radius: 12px;
+      z-index: 10;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      color: #333;
+    }
+    #ticket-ui p {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    button {
+      padding: 12px 25px;
+      border-radius: 8px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    button:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Blocker y Instrucciones para PointerLockControls -->
+  <div id="blocker">
+    <div id="instructions">
+      <p>ZOOLÓGICO 3D</p>
+      <p>Haz clic para empezar tu aventura</p>
+      <p class="text-sm opacity-80 mt-4">
+        Movimiento: <strong class="text-white">WASD</strong><br>
+        Mirar: <strong class="text-white">Ratón</strong><br>
+        <strong class="text-yellow-300">Presiona Q</strong> para liberar el ratón y usar los botones.
+      </p>
+    </div>
+  </div>
+
   <div id="ticket-ui">
+    <p>Presiona para comprar el ticket</p>
+    <button type="button" onclick="window.abrirPorton()" disabled> Comprar Ticket</button>
+  </div>
   <canvas id="canvas"></canvas>
 
   <script type="module">
     import { abrirPortonDesdeHTML } from './src/main.ts';
     window.abrirPorton = abrirPortonDesdeHTML;
+
+    const canvasElementCheck = document.getElementById('canvas');
+    if (!canvasElementCheck) {
+        console.error("ERROR HTML: El elemento canvas con ID 'canvas' no se encontró en el DOM.");
+    }
   </script>
 </body>
 </html>
