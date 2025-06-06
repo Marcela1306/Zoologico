@@ -15,16 +15,17 @@ let persona: THREE.Object3D | null = null;
 let avanzar = false;
 let portonAbierto = false;
 let sonidoPuerta: THREE.Audio;
+let ticketComprado = false;
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 export function inicializar() {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x87ceeb);
+  scene.background = new THREE.Color(0xa3d1ff);
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(15, 10, 30);
+  camera.position.set(20, 12, 35);
 
   renderer = new THREE.WebGLRenderer({
     canvas: document.getElementById('canvas') as HTMLCanvasElement,
@@ -37,22 +38,19 @@ export function inicializar() {
   controls.target.set(0, 1, -5);
   controls.update();
 
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
-  hemiLight.position.set(0, 200, 0);
-  scene.add(hemiLight);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 0.8));
+  const luzDir = new THREE.DirectionalLight(0xffffff, 0.8);
+  luzDir.position.set(30, 60, 30);
+  luzDir.castShadow = true;
+  scene.add(luzDir);
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-  dirLight.position.set(50, 50, 50);
-  dirLight.castShadow = true;
-  scene.add(dirLight);
-
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(1000, 1000),
-    new THREE.MeshPhongMaterial({ color: 0x7ec850 })
+  const suelo = new THREE.Mesh(
+    new THREE.PlaneGeometry(2000, 2000),
+    new THREE.MeshStandardMaterial({ color: 0x6db96d })
   );
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
-  scene.add(ground);
+  suelo.rotation.x = -Math.PI / 2;
+  suelo.receiveShadow = true;
+  scene.add(suelo);
 
   cargarPorton();
   cargarPersona();
@@ -60,6 +58,7 @@ export function inicializar() {
   cargarSonidoAmbiente();
   agregarAnimales();
   agregarDecoracion();
+  agregarCartelBienvenida();
 
   window.addEventListener('resize', ajustarPantalla);
   window.addEventListener('click', detectarClickAnimal);
@@ -142,43 +141,39 @@ function cargarSonidoAmbiente() {
 }
 
 function agregarAnimales() {
-  const geometria = new THREE.BoxGeometry(1.5, 1.5, 1.5);
-  const material = new THREE.MeshStandardMaterial({ color: 0xffa500 });
+  const geometria = new THREE.SphereGeometry(1, 16, 16);
+  const material = new THREE.MeshStandardMaterial({ color: 0xffcc00 });
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 8; i++) {
     const animal = new THREE.Mesh(geometria, material.clone());
-    animal.position.set(Math.random() * 30 - 15, 0.75, Math.random() * -30);
+    animal.position.set(Math.random() * 30 - 15, 1, Math.random() * -30);
     animal.userData = { nombre: `Animal ${i + 1}` };
     scene.add(animal);
-
-    const offset = Math.random() * Math.PI * 2;
-    const originalY = animal.position.y;
-
-    const animar = () => {
-      animal.position.y = originalY + Math.sin(Date.now() * 0.002 + offset) * 0.2;
-      requestAnimationFrame(animar);
-    };
-    animar();
   }
 }
 
 function agregarDecoracion() {
-  const arbolGeometry = new THREE.CylinderGeometry(0.2, 0.5, 3, 8);
-  const copaGeometry = new THREE.SphereGeometry(1.2, 8, 8);
-  const troncoMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
-  const copaMaterial = new THREE.MeshStandardMaterial({ color: 0x228b22 });
+  const troncoMat = new THREE.MeshStandardMaterial({ color: 0x8b5a2b });
+  const hojaMat = new THREE.MeshStandardMaterial({ color: 0x228b22 });
 
   for (let i = 0; i < 10; i++) {
-    const tronco = new THREE.Mesh(arbolGeometry, troncoMaterial);
-    tronco.position.set(Math.random() * 80 - 40, 1.5, Math.random() * -80);
-    tronco.castShadow = true;
+    const tronco = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 3, 8), troncoMat);
+    tronco.position.set(Math.random() * 50 - 25, 1.5, Math.random() * -50);
     scene.add(tronco);
 
-    const copa = new THREE.Mesh(copaGeometry, copaMaterial);
-    copa.position.set(tronco.position.x, 3.5, tronco.position.z);
-    copa.castShadow = true;
+    const copa = new THREE.Mesh(new THREE.SphereGeometry(1.5, 8, 8), hojaMat);
+    copa.position.set(tronco.position.x, 3, tronco.position.z);
     scene.add(copa);
   }
+}
+
+function agregarCartelBienvenida() {
+  const geometria = new THREE.PlaneGeometry(10, 3);
+  const textura = new THREE.TextureLoader().load('/assets/textures/cartel-bienvenida.png');
+  const material = new THREE.MeshBasicMaterial({ map: textura, transparent: true });
+  const cartel = new THREE.Mesh(geometria, material);
+  cartel.position.set(0, 4, -10);
+  scene.add(cartel);
 }
 
 function detectarClickAnimal(event: MouseEvent) {
@@ -207,7 +202,8 @@ function manejarTeclas(e: KeyboardEvent) {
 }
 
 export function abrirPortonDesdeHTML() {
-  if (portonAbierto) return;
+  if (portonAbierto || ticketComprado === true) return;
+  ticketComprado = true;
   portonAbierto = true;
 
   sonidoPuerta?.play();
@@ -231,8 +227,11 @@ export function abrirPortonDesdeHTML() {
 
   const ui = document.getElementById("ticket-ui");
   if (ui) {
-    ui.innerHTML = "<h2>🎉 Ticket comprado</h2><p>¡Bienvenido al Zoológico!</p>";
-    setTimeout(() => (ui.style.opacity = "0"), 4000);
+    ui.innerHTML = "<h2>🎟️ Ticket comprado</h2><p>¡Bienvenido al Zoológico Virtual!</p>";
+    ui.style.background = '#d4edda';
+    ui.style.border = '2px solid #28a745';
+    ui.style.color = '#155724';
+    setTimeout(() => (ui.style.opacity = "0"), 5000);
   }
 }
 
