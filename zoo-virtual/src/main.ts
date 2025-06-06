@@ -241,7 +241,7 @@ export function abrirPortonDesdeHTML() {
 
   // Mostrar ticket dorado animado
   const geometria = new THREE.PlaneGeometry(6, 3);
-  const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.png');
+  const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.jpg');
   const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true });
   const ticket = new THREE.Mesh(geometria, materialTicket);
   ticket.position.set(0, 5, camera.position.z - 10);
