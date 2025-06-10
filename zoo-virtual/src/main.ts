@@ -16,6 +16,9 @@ let persona: THREE.Object3D | null = null;
 let avanzar = false;
 let portonAbierto = false;
 let sonidoPuerta: THREE.Audio;
+let portonMixer: THREE.AnimationMixer | null = null;
+
+const clock = new THREE.Clock();
 
 // Inicialización
 export function inicializar() {
@@ -69,30 +72,46 @@ export function inicializar() {
   animate();
 }
 
+let hojaIzquierda: THREE.Object3D | null = null;
+let hojaDerecha: THREE.Object3D | null = null;
+const pivoteIzquierda = new THREE.Group();
+const pivoteDerecha = new THREE.Group();
+
 function cargarPorton() {
   const loader = new GLTFLoader();
   loader.load('/assets/models/porton.gltf', (gltf) => {
-    porton = gltf.scene;
-    porton.scale.set(0.15, 0.15, 0.15);
-    porton.position.set(0, 0, 0); // relativo al pivot
+    const modelo = gltf.scene;
+    modelo.scale.set(0.15, 0.15, 0.15);
 
-    porton.traverse((child) => {
+    modelo.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
+
+      if (child.name.toLowerCase().includes('izquierda')) hojaIzquierda = child;
+      if (child.name.toLowerCase().includes('derecha')) hojaDerecha = child;
     });
 
-    portonPivot.add(porton);
+    if (hojaIzquierda && hojaDerecha) {
+      hojaIzquierda.position.set(0, 0, 0);
+      hojaDerecha.position.set(0, 0, 0);
 
-    // Animación GLTF si la quieres mantener en loop
-    if (gltf.animations.length > 0) {
-      const mixer = new AnimationMixer(porton);
-      const action = mixer.clipAction(gltf.animations[0]);
-      action.play();
+      pivoteIzquierda.add(hojaIzquierda);
+      pivoteDerecha.add(hojaDerecha);
+
+      pivoteIzquierda.position.set(-1, 0, 0);
+      pivoteDerecha.position.set(1, 0, 0);
+
+      portonPivot.add(pivoteIzquierda);
+      portonPivot.add(pivoteDerecha);
     }
+
+    portonPivot.position.set(0, 0, -5);
+    scene.add(portonPivot);
   });
 }
+
 
 function cargarPersona() {
   const loader = new GLTFLoader();
@@ -138,8 +157,12 @@ export function abrirPortonDesdeHTML() {
   const velocidad = (Math.PI / 2) / (duracion * 60);
 
   function animarApertura() {
-    if (portonPivot.rotation.y > -Math.PI / 2) {
-      portonPivot.rotation.y -= velocidad;
+    let abiertoIzq = pivoteIzquierda.rotation.y > -Math.PI / 2;
+    let abiertoDer = pivoteDerecha.rotation.y < Math.PI / 2;
+
+    if (abiertoIzq || abiertoDer) {
+      if (abiertoIzq) pivoteIzquierda.rotation.y -= velocidad;
+      if (abiertoDer) pivoteDerecha.rotation.y += velocidad;
       requestAnimationFrame(animarApertura);
     }
   }
@@ -151,7 +174,7 @@ export function abrirPortonDesdeHTML() {
   camera.position.set(8, 5, 14);
   controls.update();
 
-  // Mostrar ticket animado
+  // Ticket animación igual que antes...
   const geometria = new THREE.PlaneGeometry(6, 3);
   const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.jpg');
   const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true });
@@ -180,6 +203,7 @@ export function abrirPortonDesdeHTML() {
   animarTicket();
 }
 
+
 function crearTextoSobreTicket(texto: string): THREE.Mesh {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
@@ -206,6 +230,9 @@ window.addEventListener('keydown', (e) => {
 // Animación general
 function animate() {
   requestAnimationFrame(animate);
+
+  const delta = clock.getDelta(); // Agrega un reloj
+  if (portonMixer) portonMixer.update(delta);
 
   if (persona && avanzar) {
     if (persona.position.x > -1.5) {
