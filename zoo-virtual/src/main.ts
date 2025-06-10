@@ -96,7 +96,7 @@ function cargarPorton() {
 
 function cargarPersona() {
   const loader = new GLTFLoader();
-  loader.load('/assets/models/persona/scene.gltf', (gltf) => {
+  loader.load('/assets/models/scene.gltf', (gltf) => {
     persona = gltf.scene;
     persona.scale.set(0.7, 0.7, 0.7);
     persona.position.set(10, 0, 0);
