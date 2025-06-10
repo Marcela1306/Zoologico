@@ -71,7 +71,7 @@ export function inicializar() {
 
 function cargarPorton() {
   const loader = new GLTFLoader();
-  loader.load('/assets/models/porton.glb', (gltf) => {
+  loader.load('/assets/models/porton.gltf', (gltf) => {
     porton = gltf.scene;
     porton.scale.set(0.15, 0.15, 0.15);
     porton.position.set(0, 0, 0); // relativo al pivot
