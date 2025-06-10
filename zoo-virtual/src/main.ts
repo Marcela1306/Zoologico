@@ -11,7 +11,11 @@ let renderer: THREE.WebGLRenderer;
 let controls: OrbitControls;
 
 let portonPivot = new THREE.Group();
-let porton: THREE.Object3D | null = null;
+let hojaIzquierda: THREE.Object3D | null = null;
+let hojaDerecha: THREE.Object3D | null = null;
+const pivoteIzquierda = new THREE.Group();
+const pivoteDerecha = new THREE.Group();
+
 let persona: THREE.Object3D | null = null;
 let avanzar = false;
 let portonAbierto = false;
@@ -22,32 +26,26 @@ const clock = new THREE.Clock();
 
 // Inicialización
 export function inicializar() {
-  // Escena
   scene = new THREE.Scene();
 
-  // Cámara
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(10, 7, 25);
 
-  // Render
   renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas') as HTMLCanvasElement, antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x87ceeb);
   renderer.shadowMap.enabled = true;
 
-  // Controles
   controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 1, -5);
   controls.update();
 
-  // Luces
   scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
-  directionalLight.position.set(5, 10, 5);
-  directionalLight.castShadow = true;
-  scene.add(directionalLight);
+  const light = new THREE.DirectionalLight(0xffffff, 0.7);
+  light.position.set(5, 10, 5);
+  light.castShadow = true;
+  scene.add(light);
 
-  // Suelo
   const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(500, 500),
     new THREE.MeshStandardMaterial({ color: 0x75a33f })
@@ -56,26 +54,17 @@ export function inicializar() {
   ground.receiveShadow = true;
   scene.add(ground);
 
-  // Agregar portonPivot al escenario
+  // Añadir portonPivot al escenario
   portonPivot.position.set(0, 0, -5);
   scene.add(portonPivot);
 
-  // Cargar modelos y sonidos
   cargarPorton();
   cargarPersona();
   cargarSonido();
 
-  // Resize
   window.addEventListener('resize', ajustarPantalla);
-
-  // Animar
   animate();
 }
-
-let hojaIzquierda: THREE.Object3D | null = null;
-let hojaDerecha: THREE.Object3D | null = null;
-const pivoteIzquierda = new THREE.Group();
-const pivoteDerecha = new THREE.Group();
 
 function cargarPorton() {
   const loader = new GLTFLoader();
@@ -88,7 +77,6 @@ function cargarPorton() {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-
       if (child.name.toLowerCase().includes('izquierda')) hojaIzquierda = child;
       if (child.name.toLowerCase().includes('derecha')) hojaDerecha = child;
     });
@@ -105,13 +93,11 @@ function cargarPorton() {
 
       portonPivot.add(pivoteIzquierda);
       portonPivot.add(pivoteDerecha);
+    } else {
+      console.warn("No se encontraron las hojas del portón. Verifica los nombres en el archivo GLTF.");
     }
-
-    portonPivot.position.set(0, 0, -5);
-    scene.add(portonPivot);
   });
 }
-
 
 function cargarPersona() {
   const loader = new GLTFLoader();
@@ -174,7 +160,6 @@ export function abrirPortonDesdeHTML() {
   camera.position.set(8, 5, 14);
   controls.update();
 
-  // Ticket animación igual que antes...
   const geometria = new THREE.PlaneGeometry(6, 3);
   const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.jpg');
   const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true });
@@ -203,7 +188,6 @@ export function abrirPortonDesdeHTML() {
   animarTicket();
 }
 
-
 function crearTextoSobreTicket(texto: string): THREE.Mesh {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
@@ -216,22 +200,17 @@ function crearTextoSobreTicket(texto: string): THREE.Mesh {
 
   const textura = new THREE.CanvasTexture(canvas);
   const material = new THREE.MeshBasicMaterial({ map: textura, transparent: true });
-  const plano = new THREE.Mesh(new THREE.PlaneGeometry(6, 1.5), material);
-  return plano;
+  return new THREE.Mesh(new THREE.PlaneGeometry(6, 1.5), material);
 }
 
-// Tecla "s"
 window.addEventListener('keydown', (e) => {
-  if (e.key.toLowerCase() === 's') {
-    abrirPortonDesdeHTML();
-  }
+  if (e.key.toLowerCase() === 's') abrirPortonDesdeHTML();
 });
 
-// Animación general
 function animate() {
   requestAnimationFrame(animate);
 
-  const delta = clock.getDelta(); // Agrega un reloj
+  const delta = clock.getDelta();
   if (portonMixer) portonMixer.update(delta);
 
   if (persona && avanzar) {
