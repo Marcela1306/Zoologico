@@ -2,7 +2,7 @@ import './style.css';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { AnimationMixer} from 'three';
+import { AnimationMixer } from 'three';
 
 // Escena y elementos globales
 let scene: THREE.Scene;
@@ -53,25 +53,28 @@ export function inicializar() {
   ground.receiveShadow = true;
   scene.add(ground);
 
+  // Agregar portonPivot al escenario
+  portonPivot.position.set(0, 0, -5);
+  scene.add(portonPivot);
+
   // Cargar modelos y sonidos
   cargarPorton();
   cargarPersona();
   cargarSonido();
 
-  // Escuchar resize
+  // Resize
   window.addEventListener('resize', ajustarPantalla);
 
-  // Iniciar animación
+  // Animar
   animate();
 }
 
 function cargarPorton() {
   const loader = new GLTFLoader();
-
-  loader.load('/assets/models/porton_animado.glb', (gltf) => {
+  loader.load('/assets/models/porton.glb', (gltf) => {
     porton = gltf.scene;
     porton.scale.set(0.15, 0.15, 0.15);
-    porton.position.set(0, 0, -5);
+    porton.position.set(0, 0, 0); // relativo al pivot
 
     porton.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
@@ -80,20 +83,20 @@ function cargarPorton() {
       }
     });
 
-    scene.add(porton);
+    portonPivot.add(porton);
 
-    // Animación
+    // Animación GLTF si la quieres mantener en loop
     if (gltf.animations.length > 0) {
-      const action = new AnimationMixer(porton).clipAction(gltf.animations[0]);
+      const mixer = new AnimationMixer(porton);
+      const action = mixer.clipAction(gltf.animations[0]);
       action.play();
     }
   });
 }
 
-
 function cargarPersona() {
-  const gltfLoader = new GLTFLoader();
-  gltfLoader.load('/assets/models/persona/scene.gltf', (gltf) => {
+  const loader = new GLTFLoader();
+  loader.load('/assets/models/persona/scene.gltf', (gltf) => {
     persona = gltf.scene;
     persona.scale.set(0.7, 0.7, 0.7);
     persona.position.set(10, 0, 0);
@@ -108,7 +111,6 @@ function cargarPersona() {
 
     scene.add(persona);
 
-    // Habilitar botón
     const btn = document.getElementById("buy-ticket-btn") as HTMLButtonElement;
     if (btn) btn.removeAttribute("disabled");
   });
@@ -149,14 +151,13 @@ export function abrirPortonDesdeHTML() {
   camera.position.set(8, 5, 14);
   controls.update();
 
-  // Mostrar ticket dorado animado
+  // Mostrar ticket animado
   const geometria = new THREE.PlaneGeometry(6, 3);
   const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.jpg');
   const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true });
   const ticket = new THREE.Mesh(geometria, materialTicket);
   ticket.position.set(0, 5, camera.position.z - 10);
   ticket.rotation.y = Math.PI;
-
   scene.add(ticket);
 
   const textoPlano = crearTextoSobreTicket("🎫 Welcome to Nicaragua's National Zoo!");
@@ -195,16 +196,14 @@ function crearTextoSobreTicket(texto: string): THREE.Mesh {
   return plano;
 }
 
-// Escuchar tecla "s" para simular compra del ticket
+// Tecla "s"
 window.addEventListener('keydown', (e) => {
   if (e.key.toLowerCase() === 's') {
     abrirPortonDesdeHTML();
   }
 });
 
-
-
-// Animación
+// Animación general
 function animate() {
   requestAnimationFrame(animate);
 
