@@ -1,8 +1,8 @@
 import './style.css';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { AnimationMixer} from 'three';
 
 // Escena y elementos globales
 let scene: THREE.Scene;
@@ -66,28 +66,30 @@ export function inicializar() {
 }
 
 function cargarPorton() {
-  const objLoader = new OBJLoader();
-  const textura = new THREE.TextureLoader().load('/assets/textures/briks_u1_v1.png');
+  const loader = new GLTFLoader();
 
-  objLoader.load('/assets/models/wall1.obj', (obj) => {
-    obj.traverse((child) => {
+  loader.load('/assets/models/porton_animado.glb', (gltf) => {
+    porton = gltf.scene;
+    porton.scale.set(0.15, 0.15, 0.15);
+    porton.position.set(0, 0, -5);
+
+    porton.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
-        (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({ map: textura });
-        (child as THREE.Mesh).castShadow = true;
-        (child as THREE.Mesh).receiveShadow = true;
+        child.castShadow = true;
+        child.receiveShadow = true;
       }
     });
 
-    const escala = 0.15;
-    obj.scale.set(escala, escala, escala);
-    obj.position.set((10 * escala) / 2, 0, 0); // Ajuste para abrir bien
+    scene.add(porton);
 
-    porton = obj;
-    portonPivot.add(porton);
-    portonPivot.position.set(0, 0, -5);
-    scene.add(portonPivot);
+    // Animación
+    if (gltf.animations.length > 0) {
+      const action = new AnimationMixer(porton).clipAction(gltf.animations[0]);
+      action.play();
+    }
   });
 }
+
 
 function cargarPersona() {
   const gltfLoader = new GLTFLoader();
