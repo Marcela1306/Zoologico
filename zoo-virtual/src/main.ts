@@ -10,42 +10,46 @@ let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
 let controls: OrbitControls;
 
-let portonPivot = new THREE.Group();
-let hojaIzquierda: THREE.Object3D | null = null;
-let hojaDerecha: THREE.Object3D | null = null;
-const pivoteIzquierda = new THREE.Group();
-const pivoteDerecha = new THREE.Group();
+let porton: THREE.Object3D | null = null;
+let puertaIzquierda: THREE.Object3D | null = null;
+let puertaDerecha: THREE.Object3D | null = null;
 
 let persona: THREE.Object3D | null = null;
 let avanzar = false;
 let portonAbierto = false;
 let sonidoPuerta: THREE.Audio;
-let portonMixer: THREE.AnimationMixer | null = null;
+let portonMixer: AnimationMixer | null = null;
 
 const clock = new THREE.Clock();
 
-// Inicialización
 export function inicializar() {
+  // Escena
   scene = new THREE.Scene();
 
+  // Cámara posicionada justo frente al portón
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(10, 7, 25);
+  camera.position.set(-15, 1, 5);
+  camera.lookAt(0, 2, -5);
 
+  // Render
   renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas') as HTMLCanvasElement, antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x87ceeb);
   renderer.shadowMap.enabled = true;
 
+  // Controles
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 1, -5);
+  controls.target.set(0, 2, -5);
   controls.update();
 
+  // Luces
   scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-  const light = new THREE.DirectionalLight(0xffffff, 0.7);
-  light.position.set(5, 10, 5);
-  light.castShadow = true;
-  scene.add(light);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+  directionalLight.position.set(5, 10, 5);
+  directionalLight.castShadow = true;
+  scene.add(directionalLight);
 
+  // Suelo
   const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(500, 500),
     new THREE.MeshStandardMaterial({ color: 0x75a33f })
@@ -54,71 +58,70 @@ export function inicializar() {
   ground.receiveShadow = true;
   scene.add(ground);
 
-  // Añadir portonPivot al escenario
-  portonPivot.position.set(0, 0, -5);
-  scene.add(portonPivot);
-
+  // Cargar modelos y sonidos
   cargarPorton();
   cargarPersona();
   cargarSonido();
 
+  // Resize
   window.addEventListener('resize', ajustarPantalla);
+
+  // Animar
   animate();
 }
 
 function cargarPorton() {
   const loader = new GLTFLoader();
   loader.load('/assets/models/porton.gltf', (gltf) => {
-    const modelo = gltf.scene;
-    modelo.scale.set(0.15, 0.15, 0.15);
+    porton = gltf.scene;
+    porton.scale.set(0.15, 0.15, 0.15);
+    porton.position.set(0, 0, -5);
 
-    modelo.traverse((child) => {
+    puertaIzquierda = porton.getObjectByName('puertaIzquierda') || null;
+    puertaDerecha = porton.getObjectByName('puertaDerecha') || null;
+
+    porton.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-      if (child.name.toLowerCase().includes('izquierda')) hojaIzquierda = child;
-      if (child.name.toLowerCase().includes('derecha')) hojaDerecha = child;
     });
 
-    if (hojaIzquierda && hojaDerecha) {
-      hojaIzquierda.position.set(0, 0, 0);
-      hojaDerecha.position.set(0, 0, 0);
+    scene.add(porton);
 
-      pivoteIzquierda.add(hojaIzquierda);
-      pivoteDerecha.add(hojaDerecha);
-
-      pivoteIzquierda.position.set(-1, 0, 0);
-      pivoteDerecha.position.set(1, 0, 0);
-
-      portonPivot.add(pivoteIzquierda);
-      portonPivot.add(pivoteDerecha);
-    } else {
-      console.warn("No se encontraron las hojas del portón. Verifica los nombres en el archivo GLTF.");
+    if (gltf.animations.length > 0) {
+      portonMixer = new AnimationMixer(porton);
+      const action = portonMixer.clipAction(gltf.animations[0]);
+      action.play();
     }
   });
 }
 
 function cargarPersona() {
   const loader = new GLTFLoader();
-  loader.load('/assets/models/scene.gltf', (gltf) => {
-    persona = gltf.scene;
-    persona.scale.set(0.7, 0.7, 0.7);
-    persona.position.set(10, 0, 0);
-    persona.rotation.y = Math.PI;
+loader.load('/assets/models/scene.gltf', (gltf) => {
+  persona = gltf.scene;
+  persona.scale.set(1, 1, 1);
+  persona.position.set(0, 0, 2);
+  persona.rotation.y = Math.PI;
 
-    persona.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        (child as THREE.Mesh).castShadow = true;
-        (child as THREE.Mesh).receiveShadow = true;
-      }
-    });
-
-    scene.add(persona);
-
-    const btn = document.getElementById("buy-ticket-btn") as HTMLButtonElement;
-    if (btn) btn.removeAttribute("disabled");
+  // Prueba materiales simples para visibilidad
+  persona.traverse((child) => {
+    if ((child as THREE.Mesh).isMesh) {
+      (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
   });
+
+  scene.add(persona);
+
+  const btn = document.getElementById("buy-ticket-btn") as HTMLButtonElement;
+  if (btn) btn.removeAttribute("disabled");
+});
+
+controls.target.set(0, 1, 0);
+controls.update();
 }
 
 function cargarSonido() {
@@ -139,16 +142,23 @@ export function abrirPortonDesdeHTML() {
 
   sonidoPuerta?.play();
 
-  const duracion = 1.5;
-  const velocidad = (Math.PI / 2) / (duracion * 60);
+  const duracion = 1.5; // segundos
+  const fps = 60;
+  const totalFrames = duracion * fps;
+
+  const anguloMax = Math.PI / 2;
+
+  let frame = 0;
 
   function animarApertura() {
-    let abiertoIzq = pivoteIzquierda.rotation.y > -Math.PI / 2;
-    let abiertoDer = pivoteDerecha.rotation.y < Math.PI / 2;
+    frame++;
+    const progreso = frame / totalFrames;
+    const angulo = anguloMax * progreso;
 
-    if (abiertoIzq || abiertoDer) {
-      if (abiertoIzq) pivoteIzquierda.rotation.y -= velocidad;
-      if (abiertoDer) pivoteDerecha.rotation.y += velocidad;
+    if (puertaIzquierda) puertaIzquierda.rotation.y = angulo;
+    if (puertaDerecha) puertaDerecha.rotation.y = -angulo;
+
+    if (frame < totalFrames) {
       requestAnimationFrame(animarApertura);
     }
   }
@@ -156,55 +166,95 @@ export function abrirPortonDesdeHTML() {
 
   avanzar = true;
 
-  controls.target.set(0, 1, -5);
-  camera.position.set(8, 5, 14);
+  // Ajustar cámara para seguir la acción
+  controls.target.set(3, 4, -5);
+  camera.position.set(15, 5, 5);
   controls.update();
 
-  const geometria = new THREE.PlaneGeometry(6, 3);
-  const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.jpg');
-  const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true });
-  const ticket = new THREE.Mesh(geometria, materialTicket);
-  ticket.position.set(0, 5, camera.position.z - 10);
-  ticket.rotation.y = Math.PI;
-  scene.add(ticket);
-
-  const textoPlano = crearTextoSobreTicket("🎫 Welcome to Nicaragua's National Zoo!");
-  textoPlano.position.set(0, 5, camera.position.z - 9.9);
-  scene.add(textoPlano);
-
-  const tiempoInicio = Date.now();
-  const animarTicket = () => {
-    const tiempo = (Date.now() - tiempoInicio) / 1000;
-    ticket.position.y = 5 + Math.sin(tiempo * 2) * 0.2;
-    textoPlano.position.y = ticket.position.y + 0.2;
-    ticket.rotation.y += 0.01;
-    textoPlano.rotation.y = ticket.rotation.y;
-    if (tiempo < 6) requestAnimationFrame(animarTicket);
-    else {
-      scene.remove(ticket);
-      scene.remove(textoPlano);
-    }
-  };
-  animarTicket();
+  // Mostrar ticket animado después de abrir portón
+  mostrarTicket();
 }
 
 function crearTextoSobreTicket(texto: string): THREE.Mesh {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
-  canvas.width = 512;
-  canvas.height = 110;
-  context.fillStyle = '#fff';
-  context.font = '28px Arial';
+  canvas.width = 1024;  // más ancho para más espacio
+  canvas.height = 256;  // más alto
+
+  // Fondo semi-transparente y con borde para resaltar
+  context.fillStyle = 'rgba(30, 30, 30, 0.85)';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Borde dorado para el ticket
+  context.strokeStyle = '#FFD700';
+  context.lineWidth = 12;
+  context.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
+
+  // Texto con sombra para mejor visibilidad
+  context.font = 'bold 48px Arial';
   context.textAlign = 'center';
-  context.fillText(texto, canvas.width / 2, 80);
+  context.fillStyle = '#FFD700'; // dorado
+  context.shadowColor = 'black';
+  context.shadowBlur = 8;
+  
+  // Dividir texto en varias líneas (separar por "!" o por puntos)
+  const lines = texto.split('!');
+  lines.forEach((line, i) => {
+    const textoLimpio = line.trim();
+    if (textoLimpio.length > 0) {
+      context.fillText(textoLimpio + (i < lines.length - 1 ? '!' : ''), canvas.width / 2, 70 + i * 60);
+    }
+  });
 
   const textura = new THREE.CanvasTexture(canvas);
+  textura.minFilter = THREE.LinearFilter;
   const material = new THREE.MeshBasicMaterial({ map: textura, transparent: true });
-  return new THREE.Mesh(new THREE.PlaneGeometry(6, 1.5), material);
+  const plano = new THREE.Mesh(new THREE.PlaneGeometry(6, 1.5), material);  // plano más grande
+  return plano;
 }
 
+function mostrarTicket() {
+  const geometria = new THREE.PlaneGeometry(6, 1.5);  // ticket más grande
+  const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.jpg');
+  const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true, opacity: 0.95 });
+  const ticket = new THREE.Mesh(geometria, materialTicket);
+
+  ticket.position.set(camera.position.x - 4, camera.position.y + 2, camera.position.z - 6);
+  ticket.rotation.y = Math.PI / 8;
+  ticket.castShadow = true;
+  scene.add(ticket);
+
+  const textoPlano = crearTextoSobreTicket("🎫 ¡Bienvenido al Zoológico Nacional de Nicaragua!");
+  textoPlano.position.set(ticket.position.x, ticket.position.y + 0.8, ticket.position.z + 0.1);
+  textoPlano.rotation.y = ticket.rotation.y;
+  scene.add(textoPlano);
+
+  const tiempoInicio = Date.now();
+  const duracionAnimacion = 6;
+  function animarTicket() {
+    const tiempo = (Date.now() - tiempoInicio) / 1000;
+    if (tiempo < duracionAnimacion) {
+      ticket.position.y = (camera.position.y + 2) + Math.sin(tiempo * 3) * 0.15;
+      textoPlano.position.y = ticket.position.y + 0.8;
+
+      ticket.rotation.y = Math.PI / 8 + Math.sin(tiempo * 2) * 0.1;
+      textoPlano.rotation.y = ticket.rotation.y;
+
+      requestAnimationFrame(animarTicket);
+    } else {
+      scene.remove(ticket);
+      scene.remove(textoPlano);
+    }
+  }
+  animarTicket();
+}
+
+
+// Tecla "s" para abrir portón (para testing)
 window.addEventListener('keydown', (e) => {
-  if (e.key.toLowerCase() === 's') abrirPortonDesdeHTML();
+  if (e.key.toLowerCase() === 's') {
+    abrirPortonDesdeHTML();
+  }
 });
 
 function animate() {
