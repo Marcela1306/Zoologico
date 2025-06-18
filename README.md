@@ -1,41 +1,40 @@
-# 🦁🦒 Paseo Virtual: Zoológico Nacional de Nicaragua 🐒🐊
+# 🦁🦒 Virtual Tour: National Zoo of Nicaragua 🐒🐊
 
 ---
 
-¡Bienvenido al **Paseo Virtual del Zoológico Nacional de Nicaragua**! Sumérgete en una experiencia interactiva en 3D que te permitirá explorar una representación virtual de la vida silvestre y los hábitats de nuestro querido zoológico, directamente desde tu navegador.
+Welcome to the **Virtual Tour of the National Zoo of Nicaragua**! Immerse yourself in an interactive 3D experience that lets you explore a virtual representation of the wildlife and habitats of our beloved zoo, directly from your browser.
 
 ---
 
-## 🌟 ¿Qué es este Proyecto?
+## 🌟 What is this Project?
 
-Este es un simulador de **paseo en primera persona** que te transporta a un entorno 3D, donde podrás caminar libremente y descubrir diferentes especies de animales. Nuestro objetivo es ofrecer una forma inmersiva y educativa de conocer el zoológico, brindando información clave sobre cada animal con el que interactúes.
-
----
-
-## ✨ Características Principales
-
-* **Exploración 3D Inmersiva:** Navega por un entorno virtual detallado del zoológico.
-* **Interacción con Animales:** Haz clic en los animales para revelar paneles de información con datos curiosos y descripciones.
-* **Controles Intuitivos:**
-    * **Movimiento:** Usa las teclas **WASD** para desplazarte.
-    * **Mirar:** Controla la cámara con el **ratón**.
-    * **Pausa:** Presiona **`Escape`** para pausar el paseo y regresar a la pantalla de inicio con las instrucciones.
-    * **Liberar mouse:** Presiona **`Q`** para soltar el mouse y poder darle click a cualquier objeto en el paseo.
-
-* **Música Ambiental:** Disfruta de una agradable banda sonora que acompaña tu recorrido.
+This is a **first-person walking simulator** that transports you to a 3D environment where you can freely move around and discover different animal species. Our goal is to offer an immersive and educational way to learn about the zoo, providing key information about each animal you interact with.
 
 ---
 
-## 🚀 Tecnologías Utilizadas
+## ✨ Key Features
 
-Este proyecto ha sido construido con una potente combinación de tecnologías modernas para ofrecer una experiencia 3D de alto rendimiento:
+* **Immersive 3D Exploration:** Navigate through a detailed virtual zoo environment.
+* **Animal Interaction:** Click on animals to reveal information panels with fun facts and descriptions.
+* **Intuitive Controls:**
+    * **Movement:** Use **WASD** keys to move.
+    * **Look Around:** Control the camera with the **mouse**.
+    * **Pause:** Press **`Escape`** to pause the tour and return to the main instruction screen.
+    * **Release Mouse:** Press **`Q`** to unlock the mouse, allowing you to click on any object during the tour.
+* **Ambient Music:** Enjoy a pleasant soundtrack that accompanies your journey.
 
-* **[HTML5](https://developer.mozilla.org/es/docs/Web/HTML):** Estructura base del proyecto.
-* **[CSS3](https://developer.mozilla.org/es/docs/Web/CSS):** Estilos y diseño visual, incluyendo la interfaz de usuario y la pantalla de inicio/pausa.
-* **[TypeScript](https://www.typescriptlang.org/):** Un superconjunto de JavaScript que añade tipado estático, mejorando la robustez y escalabilidad del código.
-* **[WebGL](https://developer.mozilla.org/es/docs/Web/API/WebGL_API):** La API de JavaScript para renderizar gráficos 3D y 2D interactivos en cualquier navegador compatible, siendo la base fundamental para el renderizado visual.
-* **[Three.js](https://threejs.org/):** La biblioteca JavaScript líder que simplifica el uso de WebGL para crear y mostrar contenido 3D en el navegador.
-    * **`GLTFLoader`:** Para cargar eficientemente los modelos 3D de los animales.
-    * **`PointerLockControls`:** Para la navegación en primera persona, bloqueando el puntero del ratón para una experiencia inmersiva.
+---
+
+## 🚀 Technologies Used
+
+This project has been built with a powerful combination of modern technologies to deliver a high-performance 3D experience:
+
+* **[HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML):** The basic structure of the project.
+* **[CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS):** Styling and visual design, including the user interface and the start/pause screen.
+* **[TypeScript](https://www.typescriptlang.org/):** A superset of JavaScript that adds static typing, improving code robustness and scalability.
+* **[WebGL](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API):** The JavaScript API for rendering interactive 2D and 3D graphics in any compatible web browser, serving as the fundamental base for visual rendering.
+* **[Three.js](https://threejs.org/):** The leading JavaScript library that simplifies the use of WebGL to create and display 3D content in the browser.
+    * **`GLTFLoader`:** For efficiently loading 3D animal models.
+    * **`PointerLockControls`:** For first-person navigation, locking the mouse pointer for an immersive experience.
 
 ---
