@@ -24,10 +24,20 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  overflow: hidden; 
+  font-family: 'Inter', sans-serif;
+  background-color: #000; 
+  display: flex; 
+  place-items: center; 
   min-width: 320px;
   min-height: 100vh;
+}
+
+#canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000; 
 }
 
 h1 {
@@ -95,32 +105,121 @@ button:focus-visible {
   }
 }
 
+/* --- ESTILOS RESTAURADOS PARA EL BLOCKER Y LAS INSTRUCCIONES --- */
 #blocker {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.7); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999; /* Asegura que esté por encima de todo */
+  z-index: 999;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  transition: opacity 0.5s ease-in-out;
 }
 
 #instructions {
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  font-family: sans-serif;
-  color: #fff;
+  padding: 30px 40px; 
+  border-radius: 20px; 
+  background: rgba(255, 255, 255, 0.15); 
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); 
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); 
   cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2); 
+  animation: fadeInScale 0.6s ease-out; 
 }
 
 #instructions p {
-  background: rgba(0,0,0,0.7);
-  padding: 20px;
-  border-radius: 10px;
+  margin: 10px 0;
+  font-size: 1.3em;
+  line-height: 1.6;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #E0E0E0;
 }
+#instructions p:first-child {
+  font-size: 2.8em;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* --- FIN DE ESTILOS DE BLOCKER y INSTRUCCIONES --- */
+
+/* --- Estilos para el Panel de Información (sin cambios) --- */
+#info-panel {
+  display: none; 
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-width: 90%; 
+  background-color: #fff;
+  border: 2px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 1000; 
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  font-family: 'Inter', sans-serif; 
+  text-align: center;
+}
+
+#info-panel h2 {
+  margin: 0 0 15px 0; 
+  font-size: 28px; 
+  color: #222;
+  text-transform: capitalize; 
+}
+
+#info-panel img {
+  display: none; 
+  max-width: 100%;
+  max-height: 200px; 
+  margin: 15px auto; 
+  border-radius: 8px;
+  object-fit: contain; 
+}
+
+#info-panel p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5; 
+  margin-bottom: 20px;
+}
+
+#info-panel button#close-panel {
+  background-color: #d9534f; 
+  color: white;
+  border: none;
+  padding: 10px 20px; 
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px; 
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#info-panel button#close-panel:hover {
+  background-color: #c9302c; 
+}
+/* --- Fin Estilos para el Panel de Información --- */
