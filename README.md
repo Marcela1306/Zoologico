@@ -13,6 +13,7 @@ This is a **first-person walking simulator** that transports you to a 3D environ
 ---
 
 ## ✨ Key Features
+![image](assets/inicio.jpg)
 
 * **Immersive 3D Exploration:** Navigate through a detailed virtual zoo environment.
 * **Animal Interaction:** Click on animals to reveal information panels with fun facts and descriptions.
