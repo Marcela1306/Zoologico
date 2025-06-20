@@ -105,7 +105,7 @@ function cargarPorton() {
 
 function cargarKiosko() {
   const loader = new GLTFLoader();
-  loader.load('/assets/models/Kioske.gltf', (gltf) => {
+  loader.load('/assets/models/Kioke.gltf', (gltf) => {
     kiosko = gltf.scene;
     kiosko.scale.set(1, 1, 1);
     kiosko.position.set(-7, 0, -4);
@@ -130,20 +130,20 @@ function cargarKiosko() {
       });
     }
 
-    // Mostrar jerarquía del modelo en consola
+    // Mostrar jerarquía del modelo en consola para ver nombres
     console.log('Jerarquía del kiosko:');
     kiosko.traverse((child) => {
       console.log(child.name);
     });
 
-    // Buscar el nodo con geometría visible
-    const nodoPersona = kiosko.getObjectByName('female_base_007');
+    // Buscar la mujer completa a partir del esqueleto metarig001
+    const nodoPersona = kiosko.getObjectByName('metarig001');
     const personaCompleta = nodoPersona?.parent;
 
     if (personaCompleta) {
       for (let i = 0; i < 5; i++) {
         const clon = personaCompleta.clone(true);
-        clon.position.set(-7, 0, -9 - i * 1.5); // en fila hacia atrás
+        clon.position.set(-7, 0, -9 - i * 1.5); // fila hacia atrás
         clon.scale.set(1, 1, 1);
         clon.rotation.y = Math.PI;
 
@@ -173,15 +173,14 @@ function cargarKiosko() {
           action.play();
         });
 
-        // Guardar mixer para actualizarlo luego
+        // Guardar mixer para animarlos luego
         personaMixers.push(mixer);
       }
     } else {
-      console.warn('⚠ No se encontró el nodo padre de la persona a clonar. Revisa el nombre en consola.');
+      console.warn('⚠ No se encontró el nodo "metarig001". Verificá el nombre en la jerarquía.');
     }
   });
 }
-
 
 function cargarSonido() {
   const listener = new THREE.AudioListener();
