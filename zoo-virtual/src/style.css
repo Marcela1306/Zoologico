@@ -1,11 +1,275 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-canvas {
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  overflow: hidden; 
+  font-family: 'Inter', sans-serif;
+  background-color: #000; 
+  display: flex; 
+  place-items: center; 
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#canvas {
   display: block;
   width: 100vw;
   height: 100vh;
+  background-color: #000; 
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.vanilla:hover {
+  filter: drop-shadow(0 0 2em #3178c6aa);
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* --- ESTILOS RESTAURADOS PARA EL BLOCKER Y LAS INSTRUCCIONES --- */
+#blocker {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  transition: opacity 0.5s ease-in-out;
+}
+
+#instructions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 40px; 
+  border-radius: 20px; 
+  background: rgba(255, 255, 255, 0.15); 
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); 
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); 
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2); 
+  animation: fadeInScale 0.6s ease-out; 
+}
+
+#instructions p {
+  margin: 10px 0;
+  font-size: 1.3em;
+  line-height: 1.6;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #E0E0E0;
+}
+#instructions p:first-child {
+  font-size: 2.8em;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* --- FIN DE ESTILOS DE BLOCKER y INSTRUCCIONES --- */
+
+/* --- Estilos para el Panel de Información (sin cambios) --- */
+#info-panel {
+  display: none; 
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-width: 90%; 
+  background-color: #fff;
+  border: 2px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 1000; 
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  font-family: 'Inter', sans-serif; 
+  text-align: center;
+}
+
+#info-panel h2 {
+  margin: 0 0 15px 0; 
+  font-size: 24px; 
+  color: #222;
+  text-transform: capitalize; 
+}
+
+#info-panel img {
+  display: none; 
+  max-width: 100%;
+  max-height: 200px; 
+  margin: 15px auto; 
+  border-radius: 8px;
+  object-fit: contain; 
+}
+
+#info-panel p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5; 
+  margin-bottom: 20px;
+}
+
+#info-panel button#close-panel {
+  background-color: #d9534f; 
+  color: white;
+  border: none;
+  padding: 10px 20px; 
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px; 
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#info-panel button#close-panel:hover {
+  background-color: #c9302c; 
+}
+/* --- Fin Estilos para el Panel de Información --- */
+
+/* --- Estilos para #ticketScreen y #buyTicketButton --- */
+
+#ticketScreen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: none; /* Inicia oculto, controlado por JavaScript */
+    z-index: 1000; /* Asegura que esté por encima del canvas */
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); /* Efecto de luz verde */
+    border: 2px solid green;
+}
+
+#ticketScreen h2 {
+    margin-top: 0; /* Elimina el margen superior por defecto */
+    color: #4CAF50; /* Un verde más brillante para el título */
+}
+
+#ticketScreen p {
+    margin-bottom: 10px; /* Espacio debajo del párrafo */
+}
+
+#ticketScreen p:last-child {
+    font-size: 0.8em;
+    margin-top: 10px;
+    opacity: 0.7; /* Texto más sutil */
+}
+
+#buyTicketButton {
+    background-color: #4CAF50; /* Un verde vibrante */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+}
+
+#buyTicketButton:hover {
+    background-color: #45a049; /* Un verde ligeramente más oscuro al pasar el ratón */
 }

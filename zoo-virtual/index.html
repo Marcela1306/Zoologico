@@ -1,17 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zoológico 3D</title>
-
+  <link rel="stylesheet" href="src/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="ticket-ui">
+  <div id="blocker">
+    <div id="instructions">
+      <p>ZOOLÓGICO 3D</p>
+      <p>Haz clic para iniciar el paseo virtual</p>
+      <p class="text-sm opacity-80 mt-4">
+        Movimiento: <strong class="text-white">WASD</strong><br>
+        Mirar: <strong class="text-white">Ratón</strong><br>
+        <strong class="text-yellow-300">Presiona Q</strong> para liberar el ratón y usar los botones.
+      </p>
+    </div>
+  </div>
+
   <canvas id="canvas"></canvas>
 
+  <div id="info-panel">
+    <h2 id="info-title">lol</h2>
+    <img id="info-image" src="lol" alt="Imagen del animal" >
+    <p id="info-description"></p>
+    <button type="button" id="close-panel">Cerrar</button>
+  </div>
+
+  <div id="ticketScreen">
+    <h2>¡Bienvenido al Zoológico!</h2>
+    <p>¿Listo para explorar la vida salvaje?</p>
+    <button type="button" id="buyTicketButton">Comprar Ticket</button>
+    <p>(Aléjate para cerrar)</p>
+  </div>
+
+  <script type="module" src="./src/main.ts"></script>
   <script type="module">
-    import { abrirPortonDesdeHTML } from './src/main.ts';
+    const canvasElementCheck = document.getElementById('canvas');
+    if (!canvasElementCheck) {
+        console.error("ERROR HTML: El elemento canvas con ID 'canvas' no se encontró en el DOM.");
+    }
+  </script>
+  <script type="module">
+    import { inicializar, abrirPortonDesdeHTML } from './src/main.ts';
     window.abrirPorton = abrirPortonDesdeHTML;
+    inicializar();
   </script>
 </body>
 </html>
