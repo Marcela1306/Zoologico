@@ -78,6 +78,6 @@ Click the link below to access and download all the 3D models used in this proje
 
 ## 🎥 Visual Resource
 Get a quick demo of the virtual zoo tour experience!
-📺 Watch on YouTube: [Insert your YouTube link here]
+📺 Watch on YouTube: [https://youtu.be/VDAjg4O09rU]
 
 
