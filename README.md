@@ -40,14 +40,14 @@ This project has been built with a powerful combination of modern technologies t
 ---
 
 ## 🐾Step by Step 
-* **🧾 1. Buy Your Ticket
+* 🧾 1. Buy Your Ticket
 The journey begins with purchasing a virtual ticket. This grants the user access to explore the digital zoo world.
 
-* **🧭 2. Free Exploration
+* 🧭 2. Free Exploration
 Once inside, the user enjoys total freedom of movement 🧍‍♂️🧍‍♀️.
 There's no pre-set path — you can walk wherever you like and explore at your own pace.
 
-* **🐾 3. Interactive Animals
+* 🐾 3. Interactive Animals
 By clicking on any animal 🐯🐷🦓, an information panel appears:
 
    *📸 A photo of the animal
@@ -56,7 +56,7 @@ By clicking on any animal 🐯🐷🦓, an information panel appears:
 
 This creates a more immersive and educational experience.
 
-* **🪑 4. Additional Interactions
+* 🪑 4. Additional Interactions
 The user can:
 
    *🪑 Sit on benches
@@ -65,7 +65,7 @@ The user can:
 
 These interactive areas add realism and comfort to the virtual environment.
 
-* **🌅 5. Colors & Visual Experience
+* 🌅 5. Colors & Visual Experience
 The zoo environment is designed with diverse colors, lighting, and scenic views to enhance the virtual experience and make exploration enjoyable and engaging
 
 ---
