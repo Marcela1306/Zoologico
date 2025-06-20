@@ -3,12 +3,15 @@
 ---
 
 Welcome to the **Virtual Tour of the National Zoo of Nicaragua**! Immerse yourself in an interactive 3D experience that lets you explore a virtual representation of the wildlife and habitats of our beloved zoo, directly from your browser.
+    ![Screenshot 2025-06-20 064942](https://drive.google.com/uc?export=view&id=1X00Ve65HAEalBbH5itNKVQ-o-zq6ABQ2)
 
 ---
 
 ## 🌟 What is this Project?
 
 This is a **first-person walking simulator** that transports you to a 3D environment where you can freely move around and discover different animal species. Our goal is to offer an immersive and educational way to learn about the zoo, providing key information about each animal you interact with.
+![Screenshot 2025-06-20 064942](https://drive.google.com/uc?export=view&id=14yimv0phuqKY_EJDM7Zihr0pkcMfgFOf)
+
 
 ---
 
@@ -19,9 +22,6 @@ This is a **first-person walking simulator** that transports you to a 3D environ
 * **Intuitive Controls:**
     * **Movement:** Use **WASD** keys to move.
     ![Screenshot 2025-06-20 064942](https://github.com/user-attachments/assets/41be3b85-5714-4bc5-812a-51d93844efac)
-    ![Screenshot 2025-06-20 064942](https://drive.google.com/uc?export=view&id=1cTSMEfYce6BP5upr1SzGF4XxkrCZ4dOd)
-    ![Screenshot 2025-06-20 064942](https://drive.google.com/uc?export=view&id=1X00Ve65HAEalBbH5itNKVQ-o-zq6ABQ2)
-
 
 
      ⬆️ - W ⬇️ - S ➡️ - D ⬅️ - A
