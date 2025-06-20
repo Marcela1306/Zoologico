@@ -14,11 +14,10 @@ let porton: THREE.Object3D | null = null;
 let puertaIzquierda: THREE.Object3D | null = null;
 let puertaDerecha: THREE.Object3D | null = null;
 
-let persona: THREE.Object3D | null = null;
-let avanzar = false;
-let portonAbierto = false;
+let kiosko: THREE.Object3D | null = null;
+let kioskoMixer: AnimationMixer | null = null;
+
 let sonidoPuerta: THREE.Audio;
-let portonMixer: AnimationMixer | null = null;
 
 const clock = new THREE.Clock();
 
@@ -26,7 +25,7 @@ export function inicializar() {
   // Escena
   scene = new THREE.Scene();
 
-  // Cámara posicionada justo frente al portón
+  // Cámara
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(-15, 1, 5);
   camera.lookAt(0, 2, -5);
@@ -60,10 +59,10 @@ export function inicializar() {
 
   // Cargar modelos y sonidos
   cargarPorton();
-  cargarPersona();
+  cargarKiosko();
   cargarSonido();
 
-  // Resize
+  // Ajustar pantalla al redimensionar
   window.addEventListener('resize', ajustarPantalla);
 
   // Animar
@@ -88,41 +87,39 @@ function cargarPorton() {
     });
 
     scene.add(porton);
+  });
+}
+
+function cargarKiosko() {
+  const loader = new GLTFLoader();
+  loader.load('/assets/models/Kiosko.gltf', (gltf) => {
+    kiosko = gltf.scene;
+    kiosko.scale.set(1, 1, 1);
+
+    kiosko.position.set(-5, 0, -4);
+    kiosko.rotation.y = Math.PI;
+
+    kiosko.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+
+    scene.add(kiosko);
 
     if (gltf.animations.length > 0) {
-      portonMixer = new AnimationMixer(porton);
-      const action = portonMixer.clipAction(gltf.animations[0]);
+      kioskoMixer = new AnimationMixer(kiosko);
+      const clip = gltf.animations[0];
+      const action = kioskoMixer.clipAction(clip);
       action.play();
     }
   });
+
+  controls.target.set(0, 1.5, -5);
+  controls.update();
 }
 
-function cargarPersona() {
-  const loader = new GLTFLoader();
-loader.load('/assets/models/scene.gltf', (gltf) => {
-  persona = gltf.scene;
-  persona.scale.set(1, 1, 1);
-  persona.position.set(0, 0, 2);
-  persona.rotation.y = Math.PI;
-
-  // Prueba materiales simples para visibilidad
-  persona.traverse((child) => {
-    if ((child as THREE.Mesh).isMesh) {
-      (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  scene.add(persona);
-
-  const btn = document.getElementById("buy-ticket-btn") as HTMLButtonElement;
-  if (btn) btn.removeAttribute("disabled");
-});
-
-controls.target.set(0, 1, 0);
-controls.update();
-}
 
 function cargarSonido() {
   const listener = new THREE.AudioListener();
@@ -137,15 +134,11 @@ function cargarSonido() {
 }
 
 export function abrirPortonDesdeHTML() {
-  if (portonAbierto) return;
-  portonAbierto = true;
-
   sonidoPuerta?.play();
 
-  const duracion = 1.5; // segundos
+  const duracion = 1.5;
   const fps = 60;
   const totalFrames = duracion * fps;
-
   const anguloMax = Math.PI / 2;
 
   let frame = 0;
@@ -162,95 +155,14 @@ export function abrirPortonDesdeHTML() {
       requestAnimationFrame(animarApertura);
     }
   }
+
   animarApertura();
 
-  avanzar = true;
-
-  // Ajustar cámara para seguir la acción
-  controls.target.set(3, 4, -5);
-  camera.position.set(15, 5, 5);
+  controls.target.set(0, 1.5, -2.5);
+  camera.position.set(4, 2.5, 6);
   controls.update();
-
-  // Mostrar ticket animado después de abrir portón
-  mostrarTicket();
 }
 
-function crearTextoSobreTicket(texto: string): THREE.Mesh {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d')!;
-  canvas.width = 1024;  // más ancho para más espacio
-  canvas.height = 256;  // más alto
-
-  // Fondo semi-transparente y con borde para resaltar
-  context.fillStyle = 'rgba(30, 30, 30, 0.85)';
-  context.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Borde dorado para el ticket
-  context.strokeStyle = '#FFD700';
-  context.lineWidth = 12;
-  context.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
-
-  // Texto con sombra para mejor visibilidad
-  context.font = 'bold 48px Arial';
-  context.textAlign = 'center';
-  context.fillStyle = '#FFD700'; // dorado
-  context.shadowColor = 'black';
-  context.shadowBlur = 8;
-  
-  // Dividir texto en varias líneas (separar por "!" o por puntos)
-  const lines = texto.split('!');
-  lines.forEach((line, i) => {
-    const textoLimpio = line.trim();
-    if (textoLimpio.length > 0) {
-      context.fillText(textoLimpio + (i < lines.length - 1 ? '!' : ''), canvas.width / 2, 70 + i * 60);
-    }
-  });
-
-  const textura = new THREE.CanvasTexture(canvas);
-  textura.minFilter = THREE.LinearFilter;
-  const material = new THREE.MeshBasicMaterial({ map: textura, transparent: true });
-  const plano = new THREE.Mesh(new THREE.PlaneGeometry(6, 1.5), material);  // plano más grande
-  return plano;
-}
-
-function mostrarTicket() {
-  const geometria = new THREE.PlaneGeometry(6, 1.5);  // ticket más grande
-  const texturaTicket = new THREE.TextureLoader().load('/assets/textures/ticket-dorado.jpg');
-  const materialTicket = new THREE.MeshBasicMaterial({ map: texturaTicket, transparent: true, opacity: 0.95 });
-  const ticket = new THREE.Mesh(geometria, materialTicket);
-
-  ticket.position.set(camera.position.x - 4, camera.position.y + 2, camera.position.z - 6);
-  ticket.rotation.y = Math.PI / 8;
-  ticket.castShadow = true;
-  scene.add(ticket);
-
-  const textoPlano = crearTextoSobreTicket("🎫 ¡Bienvenido al Zoológico Nacional de Nicaragua!");
-  textoPlano.position.set(ticket.position.x, ticket.position.y + 0.8, ticket.position.z + 0.1);
-  textoPlano.rotation.y = ticket.rotation.y;
-  scene.add(textoPlano);
-
-  const tiempoInicio = Date.now();
-  const duracionAnimacion = 6;
-  function animarTicket() {
-    const tiempo = (Date.now() - tiempoInicio) / 1000;
-    if (tiempo < duracionAnimacion) {
-      ticket.position.y = (camera.position.y + 2) + Math.sin(tiempo * 3) * 0.15;
-      textoPlano.position.y = ticket.position.y + 0.8;
-
-      ticket.rotation.y = Math.PI / 8 + Math.sin(tiempo * 2) * 0.1;
-      textoPlano.rotation.y = ticket.rotation.y;
-
-      requestAnimationFrame(animarTicket);
-    } else {
-      scene.remove(ticket);
-      scene.remove(textoPlano);
-    }
-  }
-  animarTicket();
-}
-
-
-// Tecla "s" para abrir portón (para testing)
 window.addEventListener('keydown', (e) => {
   if (e.key.toLowerCase() === 's') {
     abrirPortonDesdeHTML();
@@ -261,16 +173,8 @@ function animate() {
   requestAnimationFrame(animate);
 
   const delta = clock.getDelta();
-  if (portonMixer) portonMixer.update(delta);
 
-  if (persona && avanzar) {
-    if (persona.position.x > -1.5) {
-      persona.position.x -= 0.02;
-      persona.position.z -= 0.01;
-    } else {
-      avanzar = false;
-    }
-  }
+  if (kioskoMixer) kioskoMixer.update(delta);
 
   controls.update();
   renderer.render(scene, camera);
