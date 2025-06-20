@@ -73,3 +73,11 @@ The zoo environment is designed with diverse colors, lighting, and scenic views 
 ## 🔗 Drive Link to Download the 3D Models
 Click the link below to access and download all the 3D models used in this project:
 📁 https://drive.google.com/drive/folders/1dSUkeiVHaSkqi2gDzfZl1VQmL_G4ieou?usp=sharing
+
+---
+
+🎥 Visual Resource
+Get a quick demo of the virtual zoo tour experience!
+📺 Watch on YouTube: [Insert your YouTube link here]
+
+
