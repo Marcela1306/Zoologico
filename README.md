@@ -68,6 +68,8 @@ These interactive areas add realism and comfort to the virtual environment.
 * **🌅 5. Colors & Visual Experience
 The zoo environment is designed with diverse colors, lighting, and scenic views to enhance the virtual experience and make exploration enjoyable and engaging
 
+---
+
 ## 🔗 Drive Link to Download the 3D Models
 Click the link below to access and download all the 3D models used in this project:
 📁 https://drive.google.com/drive/folders/1dSUkeiVHaSkqi2gDzfZl1VQmL_G4ieou?usp=sharing
