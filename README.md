@@ -19,6 +19,11 @@ This is a **first-person walking simulator** that transports you to a 3D environ
 * **Intuitive Controls:**
     * **Movement:** Use **WASD** keys to move.
     ![Screenshot 2025-06-20 064942](https://github.com/user-attachments/assets/41be3b85-5714-4bc5-812a-51d93844efac)
+    ![Screenshot 2025-06-20 064942](https://drive.google.com/file/d/1cTSMEfYce6BP5upr1SzGF4XxkrCZ4dOd/view?usp=sharing)
+    ![Screenshot 2025-06-20 064942](https://drive.google.com/file/d/1X00Ve65HAEalBbH5itNKVQ-o-zq6ABQ2/view?usp=sharing)
+    ![Screenshot 2025-06-20 064942](https://drive.google.com/file/d/1ARj_dcdyaSvlh83iWwZQiKjfRLva73kx/view?usp=sharing)
+
+
 
      ⬆️ - W ⬇️ - S ➡️ - D ⬅️ - A
     * **Look Around:** Control the camera with the **mouse**.
