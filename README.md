@@ -18,7 +18,8 @@ This is a **first-person walking simulator** that transports you to a 3D environ
 * **Animal Interaction:** Click on animals to reveal information panels with fun facts and descriptions.
 * **Intuitive Controls:**
     * **Movement:** Use **WASD** keys to move.
-    
+    ![Screenshot 2025-06-20 064942](https://github.com/user-attachments/assets/41be3b85-5714-4bc5-812a-51d93844efac)
+
      ⬆️ - W ⬇️ - S ➡️ - D ⬅️ - A
     * **Look Around:** Control the camera with the **mouse**.
     * **Pause:** Press **`Escape`** to pause the tour and return to the main instruction screen.
