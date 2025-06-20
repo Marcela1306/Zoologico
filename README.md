@@ -18,10 +18,20 @@ This is a **first-person walking simulator** that transports you to a 3D environ
 * **Animal Interaction:** Click on animals to reveal information panels with fun facts and descriptions.
 * **Intuitive Controls:**
     * **Movement:** Use **WASD** keys to move.
+    
+     ⬆️ - W ⬇️ - S ➡️ - D ⬅️ - A
     * **Look Around:** Control the camera with the **mouse**.
     * **Pause:** Press **`Escape`** to pause the tour and return to the main instruction screen.
     * **Release Mouse:** Press **`Q`** to unlock the mouse, allowing you to click on any object during the tour.
 * **Ambient Music:** Enjoy a pleasant soundtrack that accompanies your journey.
+
+---
+## 🔗 Link to Youtube Video
+Get a quick demo of the virtual zoo tour experience!
+
+---
+## Support
+For support, email nationalzoonicaraguamasaya@gmail.com
 
 ---
 
@@ -40,14 +50,14 @@ This project has been built with a powerful combination of modern technologies t
 ---
 
 ## 🐾Step by Step 
-* 🧾 1. Buy Your Ticket
+* **🧾 1. Buy Your Ticket
 The journey begins with purchasing a virtual ticket. This grants the user access to explore the digital zoo world.
 
-* 🧭 2. Free Exploration
+* **🧭 2. Free Exploration
 Once inside, the user enjoys total freedom of movement 🧍‍♂️🧍‍♀️.
 There's no pre-set path — you can walk wherever you like and explore at your own pace.
 
-* 🐾 3. Interactive Animals
+* **🐾 3. Interactive Animals
 By clicking on any animal 🐯🐷🦓, an information panel appears:
 
    *📸 A photo of the animal
@@ -56,7 +66,7 @@ By clicking on any animal 🐯🐷🦓, an information panel appears:
 
 This creates a more immersive and educational experience.
 
-* 🪑 4. Additional Interactions
+* **🪑 4. Additional Interactions
 The user can:
 
    *🪑 Sit on benches
@@ -65,7 +75,7 @@ The user can:
 
 These interactive areas add realism and comfort to the virtual environment.
 
-* 🌅 5. Colors & Visual Experience
+* **🌅 5. Colors & Visual Experience
 The zoo environment is designed with diverse colors, lighting, and scenic views to enhance the virtual experience and make exploration enjoyable and engaging
 
 ---
@@ -75,9 +85,10 @@ Click the link below to access and download all the 3D models used in this proje
 📁 https://drive.google.com/drive/folders/1dSUkeiVHaSkqi2gDzfZl1VQmL_G4ieou?usp=sharing
 
 ---
+## Authors
+ * **Idiaquez Ordoñez Fernanda Vanessa**
+ *  **Lopez Mendez Melina Dayana**
+ *  **Alvarez Guzman Marcela Virginia**
+ *  **Borge Urbina Valeria Michell** 
 
-## 🎥 Visual Resource
-Get a quick demo of the virtual zoo tour experience!
-📺 Watch on YouTube: [https://youtu.be/VDAjg4O09rU]
-
-
+---
