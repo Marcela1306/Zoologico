@@ -3186,7 +3186,7 @@
 		{
 			"mimeType":"image/jpeg",
 			"name":"RopaLowUvs_baseColor",
-			"uri":"RopaLowUvs_baseColor.jpg"
+			"uri": "textures/RopaLowUvs_baseColor.jpg"
 		},
 		{
 			"mimeType":"image/png",

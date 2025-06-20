@@ -95,7 +95,19 @@ function cargarPorton() {
 }
 
 function cargarKiosko() {
-  const loader = new GLTFLoader();
+  // Crear manager que modifica las rutas
+  const manager = new THREE.LoadingManager();
+
+  manager.setURLModifier((url) => {
+    // Solo modificar archivos sin rutas (es decir, sin slashes)
+    if (!url.includes('/') && (url.endsWith('.jpg') || url.endsWith('.png'))) {
+      return `/assets/models/textures/${url}`;
+    }
+    return url;
+  });
+
+  const loader = new GLTFLoader(manager);
+
   loader.load('/assets/models/Kioke.gltf', (gltf) => {
     kiosko = gltf.scene;
     kiosko.scale.set(1, 1, 1);
@@ -162,6 +174,7 @@ function cargarKiosko() {
     }
   });
 }
+
 
 function cargarSonido() {
   const listener = new THREE.AudioListener();
