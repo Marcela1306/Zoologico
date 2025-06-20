@@ -38,3 +38,36 @@ This project has been built with a powerful combination of modern technologies t
     * **`PointerLockControls`:** For first-person navigation, locking the mouse pointer for an immersive experience.
 
 ---
+
+## 🐾Step by Step 
+* **🧾 1. Buy Your Ticket
+The journey begins with purchasing a virtual ticket. This grants the user access to explore the digital zoo world.
+
+* **🧭 2. Free Exploration
+Once inside, the user enjoys total freedom of movement 🧍‍♂️🧍‍♀️.
+There's no pre-set path — you can walk wherever you like and explore at your own pace.
+
+* **🐾 3. Interactive Animals
+By clicking on any animal 🐯🐷🦓, an information panel appears:
+
+   *📸 A photo of the animal
+   *📄 A short description
+   *🔊 Its sound (roar, moo, etc.)
+
+This creates a more immersive and educational experience.
+
+* **🪑 4. Additional Interactions
+The user can:
+
+   *🪑 Sit on benches
+   *☕ Visit the cafeteria
+   *🚻 Go to the bathroom
+
+These interactive areas add realism and comfort to the virtual environment.
+
+* **🌅 5. Colors & Visual Experience
+The zoo environment is designed with diverse colors, lighting, and scenic views to enhance the virtual experience and make exploration enjoyable and engaging
+
+## 🔗 Drive Link to Download the 3D Models
+Click the link below to access and download all the 3D models used in this project:
+📁 https://drive.google.com/drive/folders/1dSUkeiVHaSkqi2gDzfZl1VQmL_G4ieou?usp=sharing
