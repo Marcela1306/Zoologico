@@ -93,10 +93,10 @@ All 3D models used in this project are available here:
 
 ## 👩‍💻 Authors
 
-* **Marcela Virginia Alvarez Guzman**
-* **Valeria Michell Borge Urbina**  
-* **Fernanda Vanessa Idiaquez Ordoñez**  
-* **Melina Dayana Lopez Mendez**   
+* **Alvarez Guzman Marcela Virginia**
+* **Idiaquez Ordoñez Fernanda Vanessa**  
+* **Lopez Mendez Melina Dayana**
+* **Borge Urbina Valeria Michell**    
 
 ---
 
