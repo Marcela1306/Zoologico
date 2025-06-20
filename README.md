@@ -3,8 +3,10 @@
 ---
 
 Welcome to the **Virtual Tour of the National Zoo of Nicaragua**! Immerse yourself in an interactive 3D experience that lets you explore a virtual representation of the wildlife and habitats of our beloved zoo, directly from your browser.
-    ![Screenshot 2025-06-20 064942](https://drive.google.com/uc?export=view&id=1X00Ve65HAEalBbH5itNKVQ-o-zq6ABQ2)
 
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=1_WqfPd61lXSTKdA-2DahxElkkA5UVhb_" alt="Captura del zoológico virtual" width="600"/>
+</p>
 ---
 
 ## 🌟 What is this Project?
