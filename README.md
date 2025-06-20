@@ -27,7 +27,8 @@ This is a **first-person walking simulator** that transports you to a 3D environ
 
 ---
 ## 🔗 Link to Youtube Video
-Get a quick demo of the virtual zoo tour experience!
+Get a quick video demo of the virtual zoo tour experience!
+https://youtu.be/VDAjg4O09rU
 
 ---
 ## Support
