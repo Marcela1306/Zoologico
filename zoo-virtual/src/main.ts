@@ -12,11 +12,11 @@ const scene = new THREE.Scene();
 const gltfLoader = new GLTFLoader();
 
 //cages and internal structure (in position)
-gltfLoader.load('public/assets/models/modelo.glb', (gltf) => {
+gltfLoader.load('public/assets/models/modelozoo.glb', (gltf) => {
     const model = gltf.scene;
     console.log('Loaded Model:', model); 
-    model.scale.set(2, 2, 2); 
-    model.position.set(90, 9, 30); 
+    model.scale.set(1.5, 1.5, 1.5); 
+    model.position.set(120, -3, 120); 
 
     scene.add(model); 
 }, undefined, (error) => {
@@ -71,7 +71,7 @@ gltfLoader.load(
   (gltf) => {
     const leon = gltf.scene;
     leon.scale.set(6, 6, 6);
-    leon.position.set(-100, 2, -50); 
+    leon.position.set(-70, 4, 30); 
     leon.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -101,7 +101,7 @@ gltfLoader.load(
   (gltf) => {
     const leon1 = gltf.scene;
     leon1.scale.set(6, 6, 6);
-    leon1.position.set(-90, 2, -60); 
+    leon1.position.set(-90, 4, 45); 
     leon1.rotation.y = Math.PI / 2; // Rotate 90 degrees on the Y axis
     leon1.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
@@ -128,87 +128,6 @@ gltfLoader.load(
 );
 
 
-// Load GLTF pig (already in position)
-gltfLoader.load(
-  '/assets/models/pig/scene.gltf',
-  (gltf) => {
-    const pig = gltf.scene;
-    pig.scale.set(13, 13, 13);
-    pig.position.set(-120, 5, -120);
-    pig.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        mesh.name = "pig";
-        objetosInteractivos.push(mesh);
-      }
-    });
-    scene.add(pig);
-  },
-  undefined,
-  (error) => console.error("Error when loading pork:", error)
-);
-
-gltfLoader.load(
-  '/assets/models/piglet/scene.gltf',
-  (gltf) => {
-    const piglet = gltf.scene;
-    piglet.scale.set(1, 1, 1);
-    piglet.position.set(-110, 5, -110);
-    piglet.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        mesh.name = "piglet";
-        objetosInteractivos.push(mesh);
-      }
-    });
-
-    if (gltf.animations && gltf.animations.length > 0) {
-      const mixer = new THREE.AnimationMixer(piglet);
-      gltf.animations.forEach((clip) => {
-        const action = mixer.clipAction(clip);
-        action.play();
-      });
-      mixers.push(mixer); 
-    }
-    scene.add(piglet);
-  },
-  undefined,
-  (error) => console.error("Error when loading pork:", error)
-);
-
-gltfLoader.load(
-  '/assets/models/piglet/scene.gltf',
-  (gltf) => {
-    const piglet = gltf.scene;
-    piglet.scale.set(1, 1, 1);
-    piglet.position.set(-100, 5, -120);
-    piglet.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        mesh.name = "piglet";
-        objetosInteractivos.push(mesh);
-      }
-    });
-
-    if (gltf.animations && gltf.animations.length > 0) {
-      const mixer = new THREE.AnimationMixer(piglet);
-      gltf.animations.forEach((clip) => {
-        const action = mixer.clipAction(clip);
-        action.play();
-      });
-      mixers.push(mixer); 
-    }
-    scene.add(piglet);
-  },
-  undefined,
-  (error) => console.error("Error when loading pork:", error)
-);
 
 // Load GLTF Hippo (already in position)
 gltfLoader.load(
@@ -216,7 +135,7 @@ gltfLoader.load(
   (gltf) => {
     const hippo = gltf.scene;
     hippo.scale.set(0.2, 0.2, 0.2);
-    hippo.position.set(70, 8, -135);
+    hippo.position.set(100, 8, -150);
     hippo.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -240,13 +159,133 @@ gltfLoader.load(
   (error) => console.error("Error loading hippopotamus:", error)
 );
 
+// Load GLTF gazzela (already in position)
+gltfLoader.load(
+  '/assets/models/gazella/scene.gltf',
+  (gltf) => {
+    const gazella = gltf.scene;
+    gazella.scale.set(2, 2, 2);
+    gazella.position.set(90, 4, -40);
+    gazella.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "gazella";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(gazella);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(gazella);
+  },
+  undefined,
+  (error) => console.error("Error loading hippopotamus:", error)
+);
+
+// Load GLTF gazzela (already in position)
+gltfLoader.load(
+  '/assets/models/gazella/scene.gltf',
+  (gltf) => {
+    const gazella = gltf.scene;
+    gazella.scale.set(2, 2, 2);
+    gazella.position.set(110, 4, -40);
+    gazella.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "gazella";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(gazella);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(gazella);
+  },
+  undefined,
+  (error) => console.error("Error loading hippopotamus:", error)
+);
+
+// Load GLTF zebra (already in position)
+gltfLoader.load(
+  '/assets/models/zebra/scene.gltf',
+  (gltf) => {
+    const zebra = gltf.scene;
+    zebra.scale.set(5, 5, 5);
+    zebra.position.set(30, 3, -150);
+    zebra.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "zebra";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(zebra);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(zebra);
+  },
+  undefined,
+  (error) => console.error("Error loading hippopotamus:", error)
+);
+
+// Load GLTF zebra (already in position)
+gltfLoader.load(
+  '/assets/models/zebra/scene.gltf',
+  (gltf) => {
+    const zebra = gltf.scene;
+    zebra.scale.set(5, 5, 5);
+    zebra.position.set(10, 3, -150);
+    zebra.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "zebra";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(zebra);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(zebra);
+  },
+  undefined,
+  (error) => console.error("Error loading hippopotamus:", error)
+);
+
 // Load GLTF tiger (already in position)
 gltfLoader.load(
   '/assets/models/tiger/scene.gltf',
   (gltf) => {
     const tiger = gltf.scene;
     tiger.scale.set(7, 7, 7);
-    tiger.position.set(-100, 3, -1);
+    tiger.position.set(-70, 4, 100);
     tiger.rotation.y = Math.PI / 2; 
     tiger.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
@@ -269,7 +308,7 @@ gltfLoader.load(
   (gltf) => {
     const antelope = gltf.scene;
     antelope.scale.set(7, 7, 7);
-    antelope.position.set(40, 4, 25);
+    antelope.position.set(15, 4, 50);
     antelope.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -299,7 +338,7 @@ gltfLoader.load(
   (gltf) => {
     const antelope = gltf.scene;
     antelope.scale.set(7, 7, 7);
-    antelope.position.set(35, 4, 40);
+    antelope.position.set(25, 4, 70);
     antelope.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -331,7 +370,7 @@ gltfLoader.load(
   (gltf) => {
     const venado = gltf.scene;
     venado.scale.set(1, 1, 1);
-    venado.position.set(-20, 2, -30);
+    venado.position.set(-80, 2, -40);
     venado.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -353,7 +392,7 @@ gltfLoader.load(
   (gltf) => {
     const venadob = gltf.scene;
     venadob.scale.set(9, 9, 9);
-    venadob.position.set(-10, 2, -30);
+    venadob.position.set(-70, 2, -40);
     venadob.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -374,7 +413,7 @@ gltfLoader.load(
   (gltf) => {
     const venadob1 = gltf.scene;
     venadob1.scale.set(9, 9, 9);
-    venadob1.position.set(-25, 2, -20);
+    venadob1.position.set(-75, 2, -20);
     venadob1.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -397,7 +436,7 @@ gltfLoader.load(
   (gltf) => {
     const goat = gltf.scene;
     goat.scale.set(4, 4, 4);
-    goat.position.set(-10, 2, -120);
+    goat.position.set(25, 2, -70);
     goat.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -419,7 +458,7 @@ gltfLoader.load(
   (gltf) => {
     const sheep = gltf.scene;
     sheep.scale.set(8, 8, 8);
-    sheep.position.set(-10, 2, -90); 
+    sheep.position.set(10, 2, -60); 
     sheep.rotation.y = Math.PI / 2; 
     sheep.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
@@ -452,7 +491,7 @@ gltfLoader.load(
   (gltf) => {
     const sheep1 = gltf.scene;
     sheep1.scale.set(8, 8, 8);
-    sheep1.position.set(-20, 2, -120); 
+    sheep1.position.set(20, 2, -80); 
     sheep1.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -479,127 +518,313 @@ gltfLoader.load(
 );
 
 
-// Load GLTF birds (already in position)
+// Load GLTF turtle (already in position)
 gltfLoader.load(
-  '/assets/models/bird/scene.gltf',
+  '/assets/models/turtle/scene.gltf',
   (gltf) => {
-    const bird = gltf.scene;
-    bird.scale.set(1, 1, 1);
-    bird.position.set(80, 4, 50);
-    bird.traverse((child) => {
+    const turtle = gltf.scene;
+    turtle.scale.set(2, 2, 2);
+    turtle.position.set(110, 4, 120);
+    turtle.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
         mesh.castShadow = true;
         mesh.receiveShadow = true;
-        mesh.name = "birds";
+        mesh.name = "turtle";
         objetosInteractivos.push(mesh);
       }
     });
      
     if (gltf.animations && gltf.animations.length > 0) {
-      const mixer = new THREE.AnimationMixer(bird);
+      const mixer = new THREE.AnimationMixer(turtle);
       gltf.animations.forEach((clip) => {
         const action = mixer.clipAction(clip);
         action.play();
       });
       mixers.push(mixer); 
     }
-    scene.add(bird);
+    scene.add(turtle);
   },
   undefined,
   (error) => console.error("Error loading bird", error)
 );
 
 gltfLoader.load(
-  '/assets/models/birds/scene.gltf',
+  '/assets/models/turtle/scene.gltf',
   (gltf) => {
-    const birds = gltf.scene;
-    birds.scale.set(2, 2, 2);
-    birds.position.set(80, 10, 30);
-    birds.traverse((child) => {
+    const turtle = gltf.scene;
+    turtle.scale.set(2, 2, 2);
+    turtle.position.set(100, 4, 130);
+    turtle.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
         mesh.castShadow = true;
         mesh.receiveShadow = true;
-        mesh.name = "bird";
+        mesh.name = "turtle";
         objetosInteractivos.push(mesh);
       }
     });
     
     if (gltf.animations && gltf.animations.length > 0) {
-      const mixer = new THREE.AnimationMixer(birds);
+      const mixer = new THREE.AnimationMixer(turtle);
       gltf.animations.forEach((clip) => {
         const action = mixer.clipAction(clip);
         action.play();
       });
       mixers.push(mixer); 
     }
-    scene.add(birds);
+    scene.add(turtle);
+  },
+  undefined,
+  (error) => console.error("Error loading turtle", error)
+);
+
+// Model iguana
+gltfLoader.load(
+  '/assets/models/iguana/scene.gltf',
+  (gltf) => {
+    const iguana = gltf.scene;
+    iguana.scale.set(0.5, 0.5, 0.5);
+    iguana.position.set(130, 4, 135);
+    iguana.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "iguana";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(iguana);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(iguana);
   },
   undefined,
   (error) => console.error("Error loading bird", error)
 );
 
-// Load GLTF Bengal (already in position)
+// Model iguana
 gltfLoader.load(
-  '/assets/models/bengal_cat/scene.gltf',
+  '/assets/models/iguana3d/scene.gltf',
   (gltf) => {
-    const cat = gltf.scene;
-    cat.scale.set(4, 4, 4);
-    cat.position.set(100, 10, 50);
-    cat.traverse((child) => {
+    const iguana = gltf.scene;
+    iguana.scale.set(0.5, 0.5, 0.5);
+    iguana.position.set(125, 4, 120);
+    iguana.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
         mesh.castShadow = true;
         mesh.receiveShadow = true;
-        mesh.name = "cat";
-        objetosInteractivos.push(mesh);
-      }
-    });
-     
-    if (gltf.animations && gltf.animations.length > 0) {
-      const mixer = new THREE.AnimationMixer(cat);
-      gltf.animations.forEach((clip) => {
-        const action = mixer.clipAction(clip);
-        action.play();
-      });
-      mixers.push(mixer); 
-    }
-    scene.add(cat);
-  },
-  undefined,
-  (error) => console.error("Error loading bengal:", error)
-);
-
-
-gltfLoader.load(
-  '/assets/models/bengal_cat/scene.gltf',
-  (gltf) => {
-    const cat = gltf.scene;
-    cat.scale.set(4, 4, 4);
-    cat.position.set(100, 10, 40);
-    cat.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        mesh.name = "cat";
+        mesh.name = "iguana";
         objetosInteractivos.push(mesh);
       }
     });
     
     if (gltf.animations && gltf.animations.length > 0) {
-      const mixer = new THREE.AnimationMixer(cat);
+      const mixer = new THREE.AnimationMixer(iguana);
       gltf.animations.forEach((clip) => {
         const action = mixer.clipAction(clip);
         action.play();
       });
       mixers.push(mixer); 
     }
-    scene.add(cat);
+    scene.add(iguana);
   },
   undefined,
-  (error) => console.error("Error loading bengal:", error)
+  (error) => console.error("Error loading iguana", error)
+);
+
+//model ducks
+gltfLoader.load(
+  '/assets/models/duck/scene.gltf',
+  (gltf) => {
+    const duck = gltf.scene;
+    duck.scale.set(11, 11, 11);
+    duck.position.set(70, 4, 120);
+    duck.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "duck";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(duck);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(duck);
+  },
+  undefined,
+  (error) => console.error("Error loading bird", error)
+);
+
+//model ducks
+gltfLoader.load(
+  '/assets/models/duck/scene.gltf',
+  (gltf) => {
+    const duck = gltf.scene;
+    duck.scale.set(11, 11, 11);
+    duck.position.set(80, 4, 130);
+    duck.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "duck";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(duck);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(duck);
+  },
+  undefined,
+  (error) => console.error("Error loading bird", error)
+);
+
+//model ducks
+gltfLoader.load(
+  '/assets/models/duck/scene.gltf',
+  (gltf) => {
+    const duck = gltf.scene;
+    duck.scale.set(11, 11, 11);
+    duck.position.set(80, 4, 118);
+    duck.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "duck";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(duck);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(duck);
+  },
+  undefined,
+  (error) => console.error("Error loading bird", error)
+);
+
+//Model gorilla GLTF
+gltfLoader.load(
+  '/assets/models/gorilla/scene.gltf',
+  (gltf) => {
+    const gorilla = gltf.scene;
+    gorilla.scale.set(9, 9, 9);
+    gorilla.position.set(-90, 3, -150);
+    gorilla.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "gorilla";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(gorilla);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(gorilla);
+  },
+  undefined,
+  (error) => console.error("Error loading gorilla", error)
+);
+
+//Model monkey GLTF
+gltfLoader.load(
+  '/assets/models/monkey/scene.gltf',
+  (gltf) => {
+    const monkey = gltf.scene;
+    monkey.scale.set(0.1, 0.1, 0.1);
+    monkey.position.set(-90, 11, -100);
+    monkey.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "monkey";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(monkey);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(monkey);
+  },
+  undefined,
+  (error) => console.error("Error loading bird", error)
+);
+
+//Model monkey GLTF
+gltfLoader.load(
+  '/assets/models/monkey/scene.gltf',
+  (gltf) => {
+    const monkey = gltf.scene;
+    monkey.scale.set(0.1, 0.1, 0.1);
+    monkey.position.set(-75, 6, -100);
+    monkey.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "monkey";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(monkey);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(monkey);
+  },
+  undefined,
+  (error) => console.error("Error loading bird", error)
 );
 
 // Load GLTF coffeshop (already in position)
@@ -608,7 +833,7 @@ gltfLoader.load(
   (gltf) => {
     const cafeteria = gltf.scene;
     cafeteria.scale.set(1.7, 1.7, 1.7);
-    cafeteria.position.set(79, 8, -14);
+    cafeteria.position.set(110, 8, 70);
     
     cafeteria.rotation.y = Math.PI / -2; 
 
@@ -634,7 +859,7 @@ gltfLoader.load(
   (gltf) => {
     const bathroom = gltf.scene;
     bathroom.scale.set(1.5, 1.5, 1.5);
-    bathroom.position.set(67, 5, -80);
+    bathroom.position.set(108, 2, 2);
     
     bathroom.rotation.y = Math.PI / 2; 
 
@@ -660,7 +885,7 @@ gltfLoader.load(
   (gltf) => {
     const banca = gltf.scene;
     banca.scale.set(1, 1, 1);
-    banca.position.set(30, 3, -30);
+    banca.position.set(60, 3, 20);
     banca.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -681,7 +906,7 @@ gltfLoader.load(
   (gltf) => {
     const banca1 = gltf.scene;
     banca1.scale.set(1, 1, 1);
-    banca1.position.set(-100, 3, 50);
+    banca1.position.set(-70, 4, 140);
     banca1.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -745,7 +970,7 @@ gltfLoader.load(
   (gltf) => {
     const afrutal = gltf.scene;
     afrutal.scale.set(5, 5, 5);
-    afrutal.position.set(-120, 3, 50);
+    afrutal.position.set(-100, 4, 140);
     afrutal.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -766,7 +991,7 @@ gltfLoader.load(
   (gltf) => {
     const afrutal1 = gltf.scene;
     afrutal1.scale.set(5, 5, 5);
-    afrutal1.position.set(40, 8, -135);
+    afrutal1.position.set(60, 4, -105);
     afrutal1.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -808,7 +1033,7 @@ gltfLoader.load(
   (gltf) => {
     const arbole = gltf.scene;
     arbole.scale.set(0.5, 0.5, 0.5);
-    arbole.position.set(100, 5, 40);
+    arbole.position.set(135, 5, 135);
     arbole.rotation.y = Math.PI / 2; 
 
     arbole.traverse((child) => {
@@ -831,7 +1056,7 @@ gltfLoader.load(
   (gltf) => {
     const arboles = gltf.scene;
     arboles.scale.set(0.5, 0.5, 0.5);
-    arboles.position.set(10, 6, -170);
+    arboles.position.set(10, 6, -200);
     arboles.rotation.y = Math.PI / 2; 
 
     arboles.traverse((child) => {
@@ -854,7 +1079,7 @@ gltfLoader.load(
   (gltf) => {
     const rocas = gltf.scene;
     rocas.scale.set(5, 5, 5);
-    rocas.position.set(-115, 3, 10);
+    rocas.position.set(-90, 4, 100);
     rocas.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -877,7 +1102,7 @@ gltfLoader.load(
   (gltf) => {
     const rocas1 = gltf.scene;
     rocas1.scale.set(5, 5, 5);
-    rocas1.position.set(-115, 3, -60);
+    rocas1.position.set(-90, 4, 30);
     rocas1.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -893,6 +1118,149 @@ gltfLoader.load(
   (error) => console.error("Error loading rocks", error)
 );
 
+//model lagun
+gltfLoader.load(
+  '/assets/models/laguna/scene.gltf',
+  (gltf) => {
+    const cat = gltf.scene;
+    cat.scale.set(0.7, 0.7, 0.7);
+    cat.position.set(100, 3, 120);
+    cat.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "cat";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    
+    if (gltf.animations && gltf.animations.length > 0) {
+      const mixer = new THREE.AnimationMixer(cat);
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.play();
+      });
+      mixers.push(mixer); 
+    }
+    scene.add(cat);
+  },
+  undefined,
+  (error) => console.error("Error loading bengal:", error)
+);
+
+//bridge
+gltfLoader.load(
+  '/assets/models/puente/scene.gltf',
+  (gltf) => {
+    const rocas1 = gltf.scene;
+    rocas1.scale.set(0.2, 0.2, 0.2);
+    rocas1.position.set(5, 3, 5);
+    rocas1.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "roca1";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    scene.add(rocas1);
+  },
+  undefined,
+  (error) => console.error("Error loading rocks", error)
+);
+
+
+//cages gorilla
+gltfLoader.load(
+  '/assets/models/jail_cage.glb',
+  (gltf) => {
+    const cage = gltf.scene;
+    cage.scale.set(9, 9, 9);
+    cage.position.set(-90, 4, -160);
+    cage.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "cage";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    scene.add(cage);
+  },
+  undefined,
+  (error) => console.error("Error loading rocks", error)
+);
+
+
+//cages gorilla
+gltfLoader.load(
+  '/assets/models/jail_cage.glb',
+  (gltf) => {
+    const cage = gltf.scene;
+    cage.scale.set(9, 9, 9);
+    cage.position.set(-90, 4, -100);
+    cage.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "cage";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    scene.add(cage);
+  },
+  undefined,
+  (error) => console.error("Error loading rocks", error)
+);
+
+//repisa alligator
+gltfLoader.load(
+  '/assets/models/repisalarga/scene.gltf',
+  (gltf) => {
+    const repisa = gltf.scene;
+    repisa.scale.set(0.1, 0.1, 0.1);
+    repisa.position.set(55, 3, 130);
+    repisa.rotation.y = Math.PI / 2; 
+    repisa.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "roca1";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    scene.add(repisa);
+  },
+  undefined,
+  (error) => console.error("Error loading repisa", error)
+);
+
+//estatua alligator
+gltfLoader.load(
+  '/assets/models/alligator/scene.gltf',
+  (gltf) => {
+    const cocodrile = gltf.scene;
+    cocodrile.scale.set(27, 27, 27);
+    cocodrile.position.set(53, 13, 120);
+    cocodrile.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.name = "alligator";
+        objetosInteractivos.push(mesh);
+      }
+    });
+    scene.add(cocodrile);
+  },
+  undefined,
+  (error) => console.error("Error loading repise cocodrilo", error)
+);
 
 
 const clock = new THREE.Clock(); //constant for movement
@@ -937,17 +1305,17 @@ window.addEventListener("click", (event) => {
     const object = intersects[0].object;
     console.log("Click on:", object.name);
 
-    if (object.name === "porton") {
-      mostrarInfo("Zoo Entrance Gate", "This gate opens when a valid ticket is shown.");
+    if (object.name === "duck") {
+      mostrarInfo("Duck", "Its physical characteristics define it as an aquatic bird with a short neck, a flattened and wide beak with horny plates on the edges.", "https://www.eurekando.org/wp-content/uploads/2024/07/por-que-los-patos-tienen-una-distribucion-global-amplia.jpg");
     }
     if (object.name === "leon") {
       mostrarInfo("African Lion", "The lion is the king of the African savannah. It lives in prides and roars to communicate.", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/640px-Lion_waiting_in_Namibia.jpg");
     }
-    if (object.name === "piglet") {
-      mostrarInfo("Piglet", "A domestic animal commonly raised for food in many cultures.", "https://www.animanaturalis.org/img/pages/full/202005/P27-11697.jpg");
+    if (object.name === "gazella") {
+      mostrarInfo("Gazella", "They are medium-sized, agile antelopes. They have cinnamon or light brown fur and long, lyre-shaped horns.", "https://upload.wikimedia.org/wikipedia/commons/7/79/Gazella_gazella.jpg");
     }
-    if (object.name === "pig") {
-      mostrarInfo("Pig", "A domestic animal commonly raised for food in many cultures.", "https://www.animanaturalis.org/img/pages/full/202005/P27-11697.jpg");
+    if (object.name === "monkey") {
+      mostrarInfo("Monkey", "They are mammalian animals, equipped with four prehensile limbs and a tail, with a body covered with various fur.", "https://concepto.de/wp-content/uploads/2021/07/mono-e1626908813287.jpg");
     }
     if (object.name == "hipopotamo") {
       mostrarInfo("Hippopotamus", "A large herbivorous mammal native to sub-Saharan Africa.", "https://concepto.de/wp-content/uploads/2021/07/hipopotamo-e1626653651667-800x400.jpg");
@@ -955,8 +1323,8 @@ window.addEventListener("click", (event) => {
     if (object.name === "tigre") {
       mostrarInfo("Tiger", "The largest cat species, known for its orange coat with black stripes that are unique to each individual.", "https://www.medioambiente.net/wp-content/uploads/tigre3.jpg");
     }
-    if (object.name == "bird") {
-      mostrarInfo("Parakeet", "Also known as budgerigar, this colorful bird is the smallest member of the parrot family.", "https://www.zoobioparqueamaru.com/nos-animaux/aves/28-zoo-cuenca.jpg");
+    if (object.name == "gorilla") {
+      mostrarInfo("Gorilla", "They are herbivorous primates that inhabit the forests of Africa. They are the largest living primates.", "https://files.worldwildlife.org/wwfcmsprod/images/Gorilla_WWwinter2023/story_full_width/8rwq82enph_Gorilla_WWwinter2023.jpg");
     }
     if (object.name == "Cabra") {
       mostrarInfo("Goat", "A herbivorous mammal known for its agility, climbing ability, and adaptability to various environments.", "https://s3.animalia.bio/animals/photos/full/original/chc3a8vre-naine-rouan.webp");
@@ -973,8 +1341,17 @@ window.addEventListener("click", (event) => {
     if (object.name == "antelope") {
       mostrarInfo("Antelope", "Hoofed mammals with hollow horns, often confused with deer.", "https://www.fao.org/4/v8300s/v8300s10.jpg");
     }
-    if (object.name == "cat") {
-      mostrarInfo("Bengal Cat", "A relatively new breed, resulting from a cross between an Asian leopard cat and a domestic cat in the U.S.", "https://cdn.shopify.com/s/files/1/0692/9586/6135/files/Imagen4_a792b44d-55f4-4306-b725-ff840ccc0b46_480x480.png?v=1703242597");
+    if (object.name == "zebra") {
+      mostrarInfo("zebra", "They are quadruped mammals native to Africa, belonging to the genus Equus. They are characterized by their distinctive black and white striped fur.", "https://upload.wikimedia.org/wikipedia/commons/f/f2/Beautiful_Zebra_in_South_Africa.JPG");
+    }
+    if (object.name == "iguana") {
+      mostrarInfo("Iguana", "It is a medium-sized reptile that is native to tropical areas of the American continent such as Central America.", "https://upload.wikimedia.org/wikipedia/commons/2/23/Polish_20230102_131307806_%281%29.jpg");
+    }
+    if (object.name == "alligator") {
+      mostrarInfo("Statue Alligator", "They are large semi-aquatic reptiles that live in the tropical regions of Africa, Asia, America and Australia.", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWY_igXbeNxLDLOdkC_4YSLP7aa3G9GY96KA&s");
+    }
+    if (object.name == "turtle") {
+      mostrarInfo("Turtle", "Turtles or chelonians form an order of reptiles characterized by having a wide and short trunk, and a shell that protects the internal organs.", "https://media.cnn.com/api/v1/images/stellar/prod/cnne-1144237-jonathan-tortuga.jpg?c=original");
     }
   }
 });
