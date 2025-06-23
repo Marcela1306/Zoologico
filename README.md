@@ -103,3 +103,9 @@ All 3D models used in this project are available here:
 
 If you have questions or need assistance:  
 ✉️ nationalzoonicaraguamasaya@gmail.com
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
